@@ -9,6 +9,10 @@ module.exports = class Review extends Model {
           type: DataTypes.TEXT,
           allowNull: false,
         },
+        rating: {
+          type: DataTypes.FLOAT,
+          allowNull: false,
+        },
       },
       {
         modelName: 'Review',
@@ -21,6 +25,7 @@ module.exports = class Review extends Model {
   }
   static associate(db) {
     db.Review.belongsTo(db.User)
+    db.Review.belongsTo(db.Snack)
     db.Review.hasMany(db.Comment)
     db.Review.belongsToMany(db.User, { through: 'Like', as: 'Likers' })
   }
