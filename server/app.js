@@ -3,6 +3,8 @@ const db = require('./models')
 const cors = require('cors')
 const dotenv = require('dotenv')
 const path = require('path')
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
 
 dotenv.config()
 const app = express()
@@ -23,6 +25,18 @@ app.use(
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser(process.env.COOKIE_SECRET))
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+  })
+)
 
 app.get('/', (req, res) => {
   res.send('server')
