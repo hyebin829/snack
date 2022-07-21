@@ -6,6 +6,8 @@ const path = require('path')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 
+const postRouter = require('./routes/post')
+
 dotenv.config()
 const app = express()
 
@@ -18,7 +20,7 @@ db.sequelize
 
 app.use(
   cors({
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3000',
     credentials: true, //다른 도메인에 쿠키를 전달할 수 있다.
   })
 )
@@ -41,6 +43,8 @@ app.use(
 app.get('/', (req, res) => {
   res.send('server')
 })
+
+app.use('/post', postRouter)
 
 app.listen(3065, () => {
   console.log('hello')
