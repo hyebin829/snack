@@ -25,6 +25,7 @@ app.use(
   })
 )
 
+app.use('/snackimage', express.static(path.join(__dirname, 'snackimage')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(process.env.COOKIE_SECRET))
