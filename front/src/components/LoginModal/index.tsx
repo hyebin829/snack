@@ -14,7 +14,7 @@ const LoginModal = ({ toggleModal }: ToggleModal) => {
           <button type='button' onClick={toggleModal}>
             닫기
           </button>
-          <a href='http://localhost:3065/user/kakao/login/callback'>
+          <a href='http://localhost:3065/user/kakao/login'>
             <img src='/images/kakao_login_medium_narrow.png' alt='kakao login' />
           </a>
         </div>
