@@ -1,6 +1,6 @@
 export interface IuserState {
-  myInfo: ImyInfo[]
-  userInfo: IuserInfo[]
+  myInfo: ImyInfo[] | null
+  userInfo: IuserInfo[] | null
   loadMyInfoLoading: boolean
   loadMyInfoDone: boolean
   loadMyInfoError: null | string | undefined
