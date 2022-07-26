@@ -3,6 +3,22 @@ const router = express.Router()
 const { sequelize } = require('../models')
 const { Op } = require('sequelize')
 
+router.get('/searchresult', async (req, res, next) => {
+  const query = `
+  SELECT id,name,brand,imagesrc,country FROM snacks 
+  WHERE name LIKE "%${req.query.word}%"
+  `
+  try {
+    const searchResult = await sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT,
+    })
+    res.status(201).json(searchResult)
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+
 router.get('/popularsnack', async (req, res, next) => {
   const query = `
     WITH CNT as (
