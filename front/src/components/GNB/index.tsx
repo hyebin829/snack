@@ -1,12 +1,36 @@
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import cx from 'classnames'
+import styles from './GNB.module.scss'
+
+import { HiHome, HiUser, HiSearch } from 'react-icons/hi'
 
 const GNB = () => {
   return (
-    <nav>
+    <nav className={styles.gnb}>
       <ul>
         <li>
-          <NavLink to='/' />
+          <NavLink to='/' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
+            <span>
+              <HiHome />
+            </span>
+            <p>홈</p>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to='/search' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
+            <span>
+              <HiSearch />
+            </span>
+            <p>검색</p>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to='/profile' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
+            <span>
+              <HiUser />
+            </span>
+            <p>프로필</p>
+          </NavLink>
         </li>
       </ul>
     </nav>
