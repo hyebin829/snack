@@ -5,8 +5,11 @@ const dotenv = require('dotenv')
 const path = require('path')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
+const passport = require('passport')
+const passportConfig = require('./passport')
 
 const postRouter = require('./routes/post')
+const userRouter = require('./routes/user')
 
 dotenv.config()
 const app = express()
@@ -17,6 +20,8 @@ db.sequelize
     console.log('db연결')
   })
   .catch(console.error)
+
+passportConfig()
 
 app.use(
   cors({
@@ -40,12 +45,15 @@ app.use(
     },
   })
 )
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.get('/', (req, res) => {
   res.send('server')
 })
 
 app.use('/post', postRouter)
+app.use('/user', userRouter)
 
 app.listen(3065, () => {
   console.log('hello')
