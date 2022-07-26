@@ -9,6 +9,9 @@ export interface IpostState {
   loadTopRatingSnackLoading: boolean
   loadTopRatingSnackDone: boolean
   loadTopRatingSnackError: null | string | undefined
+  loadTopReviewSnackLoading: boolean
+  loadTopReviewSnackDone: boolean
+  loadTopReviewSnackError: null | string | undefined
   loadSearchWordLoading: boolean
   loadSearchWordDone: boolean
   loadSearchWordError: null | string | undefined
@@ -41,4 +44,10 @@ interface ItopReviewSnack {
   count: number
 }
 
-interface IsearchWord {}
+interface IsearchWord {
+  id: number
+  name: string
+  brand: string
+  imagesrc: string
+  country: string
+}
