@@ -6,12 +6,33 @@ axios.defaults.withCredentials = true
 
 export const loadPopularSnack = createAsyncThunk('post/loadPopularSnack', async () => {
   const response = await axios.get('/post/popularsnack')
-  console.log(response.data)
   return response.data
 })
 
 export const loadTopRatingSnack = createAsyncThunk('post/loadTopRatingSnack', async () => {
   const response = await axios.get('/post/topratingsnack')
-  console.log(response.data)
   return response.data
 })
+
+export const loadTopReviewSnack = createAsyncThunk('post/loadTopReviewSnack', async () => {
+  const response = await axios.get('/post/topreview')
+  return response.data
+})
+
+export const loadSearchWord = createAsyncThunk('post/loadSearchWord', async (data: word) => {
+  const response = await axios.get(`/post/searchresult?word=${data.word}`)
+  return response.data
+})
+
+export const loadSnackInfo = createAsyncThunk('post/loadSnackInfo', async (data: snackid) => {
+  const response = await axios.get(`/post/loadsnackinfo/${data.id}`)
+  return response.data
+})
+
+type word = {
+  word: string
+}
+
+type snackid = {
+  id: string | undefined
+}
