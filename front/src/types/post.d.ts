@@ -3,6 +3,7 @@ export interface IpostState {
   topRatingSnackList: ItopRatingSnack[]
   topReviewSnackList: ItopReviewSnack[]
   searchWordList: IsearchWord[]
+  snackInfo: IsnackInfo[]
   loadPopularSnackLoading: boolean
   loadPopularSnackDone: boolean
   loadPopularSnackError: null | string | undefined
@@ -15,6 +16,9 @@ export interface IpostState {
   loadSearchWordLoading: boolean
   loadSearchWordDone: boolean
   loadSearchWordError: null | string | undefined
+  loadSnackInfoLoading: boolean
+  loadSnackInfoDone: boolean
+  loadSnackInfoError: null | string | undefined
 }
 
 interface IpopularSnack {
@@ -50,4 +54,20 @@ interface IsearchWord {
   brand: string
   imagesrc: string
   country: string
+}
+
+interface IsnackInfo {
+  id: number
+  name: string
+  brand: string
+  imagesrc: string
+  country: string
+  Reviews: Ireview[]
+}
+
+interface Ireview {
+  id: number
+  SnackId: number
+  content: string
+  rating: number
 }
