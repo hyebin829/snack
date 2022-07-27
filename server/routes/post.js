@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { sequelize } = require('../models')
+const { sequelize, Review, Snack } = require('../models')
 const { Op } = require('sequelize')
 
 router.get('/searchresult', async (req, res, next) => {
@@ -87,6 +87,26 @@ router.get('/topreview', async (req, res, next) => {
       type: sequelize.QueryTypes.SELECT,
     })
     res.status(201).json(topreviewList)
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+
+router.get('/loadsnackinfo/:id', async (req, res, next) => {
+  try {
+    const snackInfo = await Snack.findAll({
+      where: { id: req.params.id },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      include: [
+        {
+          model: Review,
+          attributes: ['id', 'SnackId', 'content', 'rating'],
+        },
+      ],
+    })
+    console.log(snackInfo)
+    res.status(201).json(snackInfo)
   } catch (error) {
     console.error(error)
     next(error)
