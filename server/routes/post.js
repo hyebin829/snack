@@ -101,12 +101,33 @@ router.get('/loadsnackinfo/:id', async (req, res, next) => {
       include: [
         {
           model: Review,
-          attributes: ['id', 'SnackId', 'content', 'rating'],
+          attributes: ['id', 'SnackId', 'content', 'rating', 'UserId'],
         },
       ],
     })
     console.log(snackInfo)
     res.status(201).json(snackInfo)
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+
+router.post('/:snackId/review', async (req, res, next) => {
+  try {
+    const snack = await Snack.findOne({
+      where: { id: req.params.snackId },
+    })
+    const review = await Review.create({
+      content: req.body.content,
+      SnackId: parseInt(req.params.snackId, 10),
+      UserId: req.body.userId,
+      rating: req.body.rating,
+    })
+    if (!snack) {
+      return res.status(403).send('과자 정보가 없습니다.')
+    }
+    res.status(201).json(review)
   } catch (error) {
     console.error(error)
     next(error)
