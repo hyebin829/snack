@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loadPopularSnack, loadSearchWord, loadSnackInfo, loadTopRatingSnack, loadTopReviewSnack } from 'actions/post'
+import {
+  addReview,
+  loadPopularSnack,
+  loadSearchWord,
+  loadSnackInfo,
+  loadTopRatingSnack,
+  loadTopReviewSnack,
+} from 'actions/post'
 import { IpostState } from 'types/post'
 
 export const initialState: IpostState = {
@@ -7,7 +14,8 @@ export const initialState: IpostState = {
   topRatingSnackList: [],
   topReviewSnackList: [],
   searchWordList: [],
-  snackInfo: [],
+  snackInfo: null,
+  rating: null,
   loadPopularSnackLoading: false,
   loadPopularSnackDone: false,
   loadPopularSnackError: null,
@@ -23,6 +31,9 @@ export const initialState: IpostState = {
   loadSnackInfoLoading: false,
   loadSnackInfoDone: false,
   loadSnackInfoError: null,
+  addReviewLoading: false,
+  addReviewDone: false,
+  addReviewError: null,
 }
 
 const postSlice = createSlice({
@@ -95,11 +106,26 @@ const postSlice = createSlice({
       .addCase(loadSnackInfo.fulfilled, (state, action) => {
         state.loadSnackInfoLoading = false
         state.loadSnackInfoDone = true
-        state.snackInfo = action.payload
+        state.snackInfo = action.payload[0]
       })
       .addCase(loadSnackInfo.rejected, (state, action) => {
         state.loadSnackInfoLoading = false
         state.loadSnackInfoError = action.error.message
+      })
+      .addCase(addReview.pending, (state) => {
+        state.addReviewLoading = true
+        state.addReviewDone = false
+        state.addReviewError = null
+      })
+      .addCase(addReview.fulfilled, (state, action) => {
+        const snackinfo = state.snackInfo
+        state.addReviewLoading = false
+        state.addReviewDone = true
+        snackinfo?.Reviews.push(action.payload)
+      })
+      .addCase(addReview.rejected, (state, action) => {
+        state.addReviewLoading = false
+        state.addReviewError = action.error.message
       })
       .addDefaultCase((state) => state),
 })
