@@ -29,10 +29,22 @@ export const loadSnackInfo = createAsyncThunk('post/loadSnackInfo', async (data:
   return response.data
 })
 
+export const addReview = createAsyncThunk('post/addReview', async (data: review) => {
+  const response = await axios.post(`/post/${data.snackId}/review`, data)
+  return response.data
+})
+
 type word = {
   word: string
 }
 
 type snackid = {
   id: string | undefined
+}
+
+type review = {
+  snackId: string | undefined
+  userId: number
+  content: string
+  rating: number | null
 }
