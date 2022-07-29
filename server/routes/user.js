@@ -3,7 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const axios = require('axios')
 
-const { User, Review, Image, Comment } = require('../models')
+const { User, Review, Image, Comment, Snack } = require('../models')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -17,6 +17,11 @@ router.get('/', async (req, res, next) => {
           {
             model: Review,
             attributes: ['id', 'UserId'],
+          },
+          {
+            model: Snack,
+            as: 'Favorited',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
           },
         ],
       })
