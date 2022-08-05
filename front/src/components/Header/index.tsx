@@ -15,7 +15,7 @@ const Header = ({ toggleModal }: ToggleModal) => {
   return (
     <header>
       SNACK
-      {myInfo ? (
+      {myInfo?.id ? (
         <button type='button' onClick={handleLogout}>
           로그아웃
         </button>
