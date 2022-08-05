@@ -1,7 +1,8 @@
 import { loadSearchWord } from 'actions/post'
 import useDebounce from 'hooks/useDebounce'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { ChangeEvent, Fragment, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const SearchPage = () => {
   const [value, setValue] = useState('')
@@ -29,11 +30,11 @@ const SearchPage = () => {
       </form>
       <ul>
         {searchWordList.map((item) => (
-          <Fragment key={item.id}>
+          <Link to={`/snack/${item.id}`} key={item.id}>
             <li>{item.name}</li>
             <li>{item.brand}</li>
             <img src={`http://localhost:3065/snackimage/${item.imagesrc}`} alt={item.name} />
-          </Fragment>
+          </Link>
         ))}
       </ul>
     </div>
