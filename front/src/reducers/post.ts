@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import {
   addReview,
   loadPopularSnack,
+  loadReviews,
   loadSearchWord,
   loadSnackInfo,
   loadTopRatingSnack,
@@ -16,6 +17,8 @@ export const initialState: IpostState = {
   searchWordList: [],
   snackInfo: null,
   rating: null,
+  reviewList: [],
+  hasMoreReview: true,
   loadPopularSnackLoading: false,
   loadPopularSnackDone: false,
   loadPopularSnackError: null,
@@ -34,6 +37,9 @@ export const initialState: IpostState = {
   addReviewLoading: false,
   addReviewDone: false,
   addReviewError: null,
+  loadReviewsLoading: false,
+  loadReviewsDone: false,
+  loadReviewsError: null,
 }
 
 const postSlice = createSlice({
@@ -126,6 +132,21 @@ const postSlice = createSlice({
       .addCase(addReview.rejected, (state, action) => {
         state.addReviewLoading = false
         state.addReviewError = action.error.message
+      })
+      .addCase(loadReviews.pending, (state) => {
+        state.loadReviewsLoading = true
+        state.loadReviewsDone = false
+        state.loadReviewsError = null
+      })
+      .addCase(loadReviews.fulfilled, (state, action) => {
+        state.loadReviewsLoading = false
+        state.loadReviewsDone = true
+        state.reviewList = state.reviewList.concat(action.payload)
+        state.hasMoreReview = action.payload.length === 10
+      })
+      .addCase(loadReviews.rejected, (state, action) => {
+        state.loadReviewsLoading = false
+        state.loadReviewsError = action.error.message
       })
       .addDefaultCase((state) => state),
 })
