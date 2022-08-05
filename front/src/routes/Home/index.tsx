@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
   const dispatch = useAppDispatch()
-  const { popularSnackList, topRatingSnackList, topReviewSnackList } = useAppSelector((state) => state.post)
-  const { myInfo } = useAppSelector((state) => state.user)
+  const { popularSnackList, topRatingSnackList, topReviewSnackList } = useAppSelector(
+    (state) => state.post
+  )
 
   useEffect(() => {
     dispatch(loadPopularSnack())
