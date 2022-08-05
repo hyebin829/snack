@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { sequelize, Review, Snack } = require('../models')
+const { sequelize, Review, Snack, Comment, User } = require('../models')
 const { Op } = require('sequelize')
 
 router.get('/searchresult', async (req, res, next) => {
@@ -103,6 +103,15 @@ router.get('/loadsnackinfo/:id', async (req, res, next) => {
           model: Review,
           attributes: ['id', 'SnackId', 'content', 'rating', 'UserId'],
         },
+        {
+          model: Review,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
       ],
     })
     console.log(snackInfo)
@@ -131,6 +140,45 @@ router.post('/:snackId/review', async (req, res, next) => {
   } catch (error) {
     console.error(error)
     next(error)
+  }
+})
+
+router.get('/:snackId/review', async (req, res, next) => {
+  const where = { snackId: parseInt(req.params.snackId, 10) }
+  try {
+    if (parseInt(req.query.lastId, 10)) {
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
+      console.log(where)
+    }
+    const reviews = await Review.findAll({
+      where,
+      limit: 10,
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
+      ],
+    })
+    res.status(201).json(reviews)
+    console.log(reviews)
+  } catch (error) {
+    console.error(error)
   }
 })
 
