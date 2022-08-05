@@ -3,8 +3,8 @@ import { loadMyInfo, login, logout } from 'actions/user'
 import { IuserState } from 'types/user'
 
 export const initialState: IuserState = {
-  myInfo: [],
-  userInfo: [],
+  myInfo: null,
+  userInfo: null,
   loadMyInfoLoading: false,
   loadMyInfoDone: false,
   loadMyInfoError: null,
