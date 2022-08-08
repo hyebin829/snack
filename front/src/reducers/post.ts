@@ -108,6 +108,8 @@ const postSlice = createSlice({
         state.loadSnackInfoLoading = true
         state.loadSnackInfoDone = false
         state.loadSnackInfoError = null
+        state.hasMoreReview = true
+        state.reviewList = []
       })
       .addCase(loadSnackInfo.fulfilled, (state, action) => {
         state.loadSnackInfoLoading = false
@@ -128,6 +130,7 @@ const postSlice = createSlice({
         state.addReviewLoading = false
         state.addReviewDone = true
         snackinfo?.Reviews.push(action.payload)
+        state.hasMoreReview = true
       })
       .addCase(addReview.rejected, (state, action) => {
         state.addReviewLoading = false
