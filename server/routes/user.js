@@ -69,4 +69,35 @@ router.get('/kakao/logout', async (req, res) => {
   res.redirect('http://localhost:3000')
 })
 
+router.patch('/:snackId/favorite', async (req, res, next) => {
+  try {
+    const snack = await Snack.findOne({
+      where: { id: req.params.snackId },
+    })
+    if (!snack) {
+      res.status(403).send('존재하지 않는 과자입니다.')
+    }
+    await snack.addFavorites(req.user.id)
+    console.log(snack)
+    res.status(201).json({ snackId: parseInt(req.params.snackId, 10), userId: req.user.id })
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+router.delete('/:snackId/favorite', async (req, res, next) => {
+  try {
+    const snack = await Snack.findOne({
+      where: { id: req.params.snackId },
+    })
+    if (!snack) {
+      res.status(403).send('존재하지 않는 과자입니다.')
+    }
+    await snack.removeFavorites(req.user.id)
+    res.status(201).json({ snackId: parseInt(req.params.snackId, 10), userId: req.user.id })
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 module.exports = router

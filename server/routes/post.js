@@ -112,6 +112,11 @@ router.get('/loadsnackinfo/:id', async (req, res, next) => {
             },
           ],
         },
+        {
+          model: User,
+          as: 'Favorites',
+          attributes: ['id'],
+        },
       ],
     })
     console.log(snackInfo)

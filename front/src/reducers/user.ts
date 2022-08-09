@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loadMyInfo, login, logout } from 'actions/user'
+import { addFavorite, loadMyInfo, login, logout, removeFavorite } from 'actions/user'
 import { IuserState } from 'types/user'
 
 export const initialState: IuserState = {
@@ -14,6 +14,12 @@ export const initialState: IuserState = {
   logoutLoading: false,
   logoutDone: false,
   logoutError: null,
+  addFavoriteLoading: false,
+  addFavoriteDone: false,
+  addFavoriteError: null,
+  removeFavoriteLoading: false,
+  removeFavoriteDone: false,
+  removeFavoriteError: null,
 }
 
 const userSlice = createSlice({
@@ -63,7 +69,38 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.logoutLoading = false
         state.logoutError = action.error.message
-      }),
+      })
+      .addCase(addFavorite.pending, (state) => {
+        state.addFavoriteLoading = true
+        state.addFavoriteDone = false
+        state.addFavoriteError = null
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        const { myInfo } = state
+        state.addFavoriteLoading = false
+        state.addFavoriteDone = true
+        myInfo?.Favorited.push(action.payload)
+      })
+      .addCase(addFavorite.rejected, (state, action) => {
+        state.addFavoriteLoading = false
+        state.addFavoriteError = action.error.message
+      })
+      .addCase(removeFavorite.pending, (state) => {
+        state.removeFavoriteLoading = true
+        state.removeFavoriteDone = false
+        state.removeFavoriteError = null
+      })
+      .addCase(removeFavorite.fulfilled, (state, action) => {
+        const { myInfo } = state
+        state.removeFavoriteLoading = false
+        state.removeFavoriteDone = true
+        myInfo?.Favorited.filter((favorite) => favorite.id !== action.payload.SnackId)
+      })
+      .addCase(removeFavorite.rejected, (state, action) => {
+        state.removeFavoriteLoading = false
+        state.removeFavoriteError = action.error.message
+      })
+      .addDefaultCase((state) => state),
 })
 
 export default userSlice

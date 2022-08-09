@@ -1,4 +1,5 @@
 import { loadSnackInfo } from 'actions/post'
+import FavoriteButton from 'components/FavoriteButton'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -9,11 +10,13 @@ const SnackPage = () => {
   const snackId = params.id
   const dispatch = useAppDispatch()
   const { snackInfo } = useAppSelector((state) => state.post)
-  const { myInfo } = useAppSelector((state) => state.user)
+  const { myInfo, addFavoriteLoading, removeFavoriteLoading } = useAppSelector(
+    (state) => state.user
+  )
 
   useEffect(() => {
     dispatch(loadSnackInfo({ id: snackId }))
-  }, [dispatch, snackId])
+  }, [dispatch, snackId, addFavoriteLoading, removeFavoriteLoading])
 
   const myReview = snackInfo?.Reviews.filter((x) => x.UserId === myInfo?.id)
 
@@ -27,6 +30,7 @@ const SnackPage = () => {
 
   return (
     <div>
+      <FavoriteButton snackInfo={snackInfo} />
       {myReview?.length ? (
         <div>{myReview[0].content}</div>
       ) : (

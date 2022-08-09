@@ -72,6 +72,17 @@ interface IsnackInfo {
   imagesrc: string
   country: string
   Reviews: Ireview[]
+  Favorites: Ifavorited[]
+}
+
+interface Ifavorited {
+  Favorite: {
+    SnackId: number
+    UserId: number
+    createdAt: string | null
+    createdAt: string | null
+  }
+  id: number
 }
 
 export interface Ireview {
