@@ -11,7 +11,7 @@ const GNB = () => {
         <li>
           <NavLink to='/' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
             <span>
-              <HiHome />
+              <HiHome size={20} />
             </span>
             <p>홈</p>
           </NavLink>
@@ -19,7 +19,7 @@ const GNB = () => {
         <li>
           <NavLink to='/search' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
             <span>
-              <HiSearch />
+              <HiSearch size={20} />
             </span>
             <p>검색</p>
           </NavLink>
@@ -27,7 +27,7 @@ const GNB = () => {
         <li>
           <NavLink to='/profile' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
             <span>
-              <HiUser />
+              <HiUser size={20} />
             </span>
             <p>프로필</p>
           </NavLink>
