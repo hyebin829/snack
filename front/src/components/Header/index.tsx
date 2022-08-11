@@ -1,5 +1,6 @@
 import { logout } from 'actions/user'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
+import styles from './header.module.scss'
 
 type ToggleModal = {
   toggleModal: React.MouseEventHandler<HTMLButtonElement>
@@ -13,8 +14,8 @@ const Header = ({ toggleModal }: ToggleModal) => {
   }
 
   return (
-    <header>
-      SNACK
+    <header className={styles.header}>
+      <h1>SNACK</h1>
       {myInfo?.id ? (
         <button type='button' onClick={handleLogout}>
           로그아웃
