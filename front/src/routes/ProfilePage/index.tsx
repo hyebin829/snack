@@ -1,5 +1,15 @@
+import { useAppSelector } from 'hooks/useRedux'
+import { useEffect } from 'react'
+
 const ProfilePage = () => {
-  return <div>profile</div>
+  const { myInfo } = useAppSelector((state) => state.user)
+
+  useEffect(() => {}, [myInfo])
+  return (
+    <div>
+      <div>{myInfo?.nickname}</div>
+    </div>
+  )
 }
 
 export default ProfilePage

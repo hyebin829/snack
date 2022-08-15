@@ -14,7 +14,7 @@
 }
 
 .ratingInput:checked ~ .ratingLabel .starIcon {
-  color: colors.$GRAYA;
+  color: colors.$GRAY3;
 }
 
 .ratingGroup:hover .ratingLabel .starIcon {
@@ -22,5 +22,5 @@
 }
 
 .ratingInput:hover ~ .ratingLabel .starIcon {
-  color: colors.$GRAYA;
+  color: colors.$GRAY3;
 }

@@ -5,6 +5,8 @@ import ProfilePage from './ProfilePage'
 import ReviewWritePage from './ReviewWritePage'
 import SearchPage from './SearchPage'
 import SnackPage from './SnackPage'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
 const App = () => {
   return (
