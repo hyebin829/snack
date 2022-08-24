@@ -1,0 +1,22 @@
+/* stylelint-disable color-function-notation */
+/* stylelint-disable scale-unlimited/declaration-strict-value */
+/* stylelint-disable selector-class-pattern */
+@use '/src/styles/constants/colors';
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+  font-size: 15px !important;
+  color: colors.$BLACK !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  top: 60% !important;
+  display: none;
+  width: 28px !important;
+  height: 28px !important;
+  background-color: colors.$WHITE;
+  border-radius: 50%;
+  box-shadow: rgb(0 0 0 / 20%) 0 0 4px 0;
+}
