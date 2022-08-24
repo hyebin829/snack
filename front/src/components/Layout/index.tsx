@@ -3,7 +3,7 @@ import GNB from 'components/GNB'
 import Header from 'components/Header'
 import LoginModal from 'components/LoginModal'
 import { useAppDispatch } from 'hooks/useRedux'
-import { useEffect, useState } from 'react'
+import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import styles from './layout.module.scss'
 
@@ -35,7 +35,7 @@ const Layout = () => {
       <Header toggleModal={toggleModal} />
       <GNB />
       <main>
-        {isModalView && <LoginModal toggleModal={toggleModal} />}
+        {isModalView && <LoginModal toggleModal={toggleModal} setIsModalView={setIsModalView} />}
         <Outlet />
       </main>
       <footer />
