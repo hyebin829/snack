@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ReviewListPage from 'routes/ReviewListPage'
+import styles from './snack.module.scss'
+import { AiFillStar } from 'react-icons/ai'
 
 const SnackPage = () => {
   const params = useParams()
@@ -31,22 +33,24 @@ const SnackPage = () => {
   return (
     <div>
       <FavoriteButton snackInfo={snackInfo} />
+      <ul className={styles.snackInfoWrapper}>
+        <img
+          src={`http://localhost:3065/snackimage/${snackInfo?.imagesrc}`}
+          alt={snackInfo?.name}
+        />
+        <li className={styles.snackName}>{snackInfo?.name}</li>
+        <li>{snackInfo?.brand}</li>
+        <li>{snackInfo?.country}</li>
+        <li>
+          평균 <AiFillStar size={14} /> {isNaN(ratingAverage) ? 0 : ratingAverage}
+        </li>
+      </ul>
+
       {myReview?.length ? (
         <div>{myReview[0].content}</div>
       ) : (
         <Link to={`/snack/${snackId}/review`}>리뷰 작성하기</Link>
       )}
-      <ul>
-        <li>{isNaN(ratingAverage) ? 0 : ratingAverage}</li>
-        <li>{snackInfo?.name}</li>
-        <li>{snackInfo?.brand}</li>
-        <li>{snackInfo?.country}</li>
-        <img
-          src={`http://localhost:3065/snackimage/${snackInfo?.imagesrc}`}
-          alt={snackInfo?.name}
-        />
-      </ul>
-
       <ReviewListPage />
     </div>
   )
