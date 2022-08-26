@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   addReview,
+  removeReview,
   loadPopularSnack,
   loadReviews,
   loadSearchWord,
@@ -40,6 +41,9 @@ export const initialState: IpostState = {
   loadReviewsLoading: false,
   loadReviewsDone: false,
   loadReviewsError: null,
+  removeReviewLoading: false,
+  removeReviewDone: false,
+  removeReviewError: null,
 }
 
 const postSlice = createSlice({
@@ -127,9 +131,11 @@ const postSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         const { snackInfo } = state
+        const { reviewList } = state
         state.addReviewLoading = false
         state.addReviewDone = true
         snackInfo?.Reviews.push(action.payload)
+        reviewList.unshift(action.payload)
         state.hasMoreReview = true
       })
       .addCase(addReview.rejected, (state, action) => {
@@ -151,6 +157,24 @@ const postSlice = createSlice({
         state.loadReviewsLoading = false
         state.loadReviewsError = action.error.message
       })
+      .addCase(removeReview.pending, (state) => {
+        state.removeReviewLoading = true
+        state.removeReviewDone = false
+        state.removeReviewError = null
+      })
+      .addCase(removeReview.fulfilled, (state, action) => {
+        const { snackInfo } = state
+        const { reviewList } = state
+        state.removeReviewLoading = false
+        state.removeReviewDone = true
+        snackInfo?.Reviews.filter((review) => action.payload !== review.id)
+        reviewList?.filter((review) => action.payload !== review.id)
+      })
+      .addCase(removeReview.rejected, (state, action) => {
+        state.removeReviewLoading = false
+        state.removeReviewError = action.error.message
+      })
+
       .addDefaultCase((state) => state),
 })
 

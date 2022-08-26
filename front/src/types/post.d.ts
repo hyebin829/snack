@@ -28,6 +28,9 @@ export interface IpostState {
   loadReviewsLoading: boolean
   loadReviewsDone: boolean
   loadReviewsError: null | string | undefined
+  removeReviewLoading: boolean
+  removeReviewDone: boolean
+  removeReviewError: null | string | undefined
 }
 
 interface IpopularSnack {
@@ -113,4 +116,9 @@ export type review = {
 export type reviewId = {
   lastId: number | undefined
   snackId: string | undefined
+}
+
+export type myReview = {
+  reviewId: number | undefined
+  userId: number | undefined
 }

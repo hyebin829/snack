@@ -101,7 +101,7 @@ router.get('/loadsnackinfo/:id', async (req, res, next) => {
       include: [
         {
           model: Review,
-          attributes: ['id', 'SnackId', 'content', 'rating', 'UserId'],
+          attributes: ['id', 'SnackId', 'content', 'rating', 'UserId', 'createdAt'],
         },
         {
           model: Review,
@@ -184,6 +184,22 @@ router.get('/:snackId/review', async (req, res, next) => {
     console.log(reviews)
   } catch (error) {
     console.error(error)
+  }
+})
+
+router.delete('/:reviewId', async (req, res, next) => {
+  console.log(req.user)
+  try {
+    await Review.destroy({
+      where: {
+        id: req.params.reviewId,
+        UserId: req.user.id,
+      },
+    })
+    res.status(200).json({ reviewId: parseInt(req.params.reviewId, 10) })
+  } catch (error) {
+    console.error(error)
+    next(error)
   }
 })
 
