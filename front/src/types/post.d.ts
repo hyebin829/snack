@@ -92,6 +92,7 @@ export interface Ireview {
   rating: number
   UserId: number
   User: { id: number; nickname: string }
+  createdAt: date
 }
 
 export type word = {
