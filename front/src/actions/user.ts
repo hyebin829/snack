@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { snackid } from 'types/post'
+import { userNickname } from 'types/user'
 
 axios.defaults.baseURL = 'http://localhost:3065'
 axios.defaults.withCredentials = true
@@ -29,3 +30,11 @@ export const removeFavorite = createAsyncThunk('user/removeFavorite', async (dat
   const response = await axios.delete(`/user/${data.id}/favorite`)
   return response.data
 })
+
+export const changeNickname = createAsyncThunk(
+  'user/changeNickname',
+  async (data: userNickname) => {
+    const response = await axios.patch(`/user/nickname`, data)
+    return response.data
+  }
+)
