@@ -4,7 +4,7 @@ import { loadPopularSnack, loadTopRatingSnack, loadTopReviewSnack } from 'action
 import { loadMyInfo } from 'actions/user'
 import { Link } from 'react-router-dom'
 import { AiFillStar } from 'react-icons/ai'
-import { GoHeart } from 'react-icons/go'
+import { IoMdHeart } from 'react-icons/io'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/scss'
@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <div className={styles.homeWrapper}>
       <h2>인기 과자</h2>
-      <Swiper slidesPerView={3} navigation modules={[Navigation]} className={styles.slicklist}>
+      <Swiper slidesPerView={3} navigation modules={[Navigation]}>
         {popularSnackList.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={`/snack/${item.id}`} key={item.id}>
@@ -39,8 +39,8 @@ const Home = () => {
                 <img src={`http://localhost:3065/snackimage/${item.imagesrc}`} alt={item.name} />
                 <li>{item.name}</li>
                 <li>{item.brand}</li>
-                <li>
-                  <GoHeart size={13} /> {item.count}
+                <li className={styles.heartCount}>
+                  <IoMdHeart size={14} color='pink' /> {item.count}
                 </li>
               </span>
             </Link>
@@ -48,7 +48,7 @@ const Home = () => {
         ))}
       </Swiper>
       <h2>별점이 높은 과자</h2>
-      <Swiper slidesPerView={3} navigation modules={[Navigation]} className={styles.slicklist}>
+      <Swiper slidesPerView={3} navigation modules={[Navigation]}>
         {topRatingSnackList.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={`/snack/${item.id}`} key={item.id}>
@@ -57,7 +57,7 @@ const Home = () => {
                 <li>{item.name}</li>
                 <li>{item.brand}</li>
                 <li>
-                  <AiFillStar size={12} />
+                  <AiFillStar size={12} color='orange' />
                   {item.rating.toFixed(1)}
                 </li>
               </span>
@@ -66,7 +66,7 @@ const Home = () => {
         ))}
       </Swiper>
       <h2>리뷰가 많은 과자</h2>
-      <Swiper slidesPerView={3} navigation modules={[Navigation]} className={styles.slicklist}>
+      <Swiper slidesPerView={3} navigation modules={[Navigation]}>
         {topReviewSnackList.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={`/snack/${item.id}`} key={item.id}>
