@@ -1,0 +1,36 @@
+@use '/src/styles/constants/colors';
+
+.myfavoriteWrapper {
+  h2 {
+    margin: 80px 5px 10px;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .favoriteListWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
+    justify-items: center;
+
+    .snackWrapper {
+      padding: 15px 20px;
+      border: 1px solid colors.$BACKGROUND;
+      border-radius: 5px;
+
+      img {
+        width: 130px;
+      }
+
+      .snackName {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .snackBrand {
+        font-size: 14px;
+        color: colors.$G;
+      }
+    }
+  }
+}
