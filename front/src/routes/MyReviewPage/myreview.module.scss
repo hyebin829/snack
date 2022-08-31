@@ -1,0 +1,15 @@
+.reviewWrapper {
+  height: 200px;
+
+  img {
+    width: 100px;
+  }
+
+  .review {
+    display: flex;
+
+    span {
+      display: block;
+    }
+  }
+}
