@@ -8,6 +8,7 @@ import {
   loadSnackInfo,
   loadTopRatingSnack,
   loadTopReviewSnack,
+  loadMyReviews,
 } from 'actions/post'
 import { IpostState } from 'types/post'
 
@@ -19,7 +20,9 @@ export const initialState: IpostState = {
   snackInfo: null,
   rating: null,
   reviewList: [],
+  myReviewList: [],
   hasMoreReview: true,
+  hasMoreMyReview: true,
   loadPopularSnackLoading: false,
   loadPopularSnackDone: false,
   loadPopularSnackError: null,
@@ -44,6 +47,9 @@ export const initialState: IpostState = {
   removeReviewLoading: false,
   removeReviewDone: false,
   removeReviewError: null,
+  loadMyReviewsLoading: false,
+  loadMyReviewsDone: false,
+  loadMyReviewsError: null,
 }
 
 const postSlice = createSlice({
@@ -130,13 +136,13 @@ const postSlice = createSlice({
         state.addReviewError = null
       })
       .addCase(addReview.fulfilled, (state, action) => {
-        const { snackInfo } = state
-        const { reviewList } = state
+        const { snackInfo, reviewList, myReviewList } = state
         state.addReviewLoading = false
         state.addReviewDone = true
-        snackInfo?.Reviews.push(action.payload)
-        reviewList.unshift(action.payload)
         state.hasMoreReview = true
+        reviewList.unshift(action.payload)
+        myReviewList.unshift(action.payload)
+        snackInfo?.Reviews.push(action.payload)
       })
       .addCase(addReview.rejected, (state, action) => {
         state.addReviewLoading = false
@@ -174,7 +180,21 @@ const postSlice = createSlice({
         state.removeReviewLoading = false
         state.removeReviewError = action.error.message
       })
-
+      .addCase(loadMyReviews.pending, (state) => {
+        state.loadMyReviewsLoading = true
+        state.loadMyReviewsDone = false
+        state.loadMyReviewsError = null
+      })
+      .addCase(loadMyReviews.fulfilled, (state, action) => {
+        state.loadMyReviewsLoading = false
+        state.loadMyReviewsDone = true
+        state.myReviewList = state.myReviewList.concat(action.payload)
+        state.hasMoreMyReview = action.payload.length === 10
+      })
+      .addCase(loadMyReviews.rejected, (state, action) => {
+        state.loadMyReviewsLoading = false
+        state.loadMyReviewsError = action.error.message
+      })
       .addDefaultCase((state) => state),
 })
 
