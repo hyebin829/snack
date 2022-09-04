@@ -1,0 +1,38 @@
+@use '/src/styles/constants/colors';
+
+.snackInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 8px solid colors.$BACKGROUND;
+
+  img {
+    width: 160px;
+    height: auto;
+    margin-top: 30px;
+  }
+
+  .snackName {
+    margin: 10px 0 5px;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .snackBrand {
+    font-size: 15px;
+    color: colors.$GRAY2;
+  }
+
+  .rating {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+}
+
+.myReviewWrapper {
+  margin-bottom: 20px;
+  border-bottom: 1px solid black;
+}

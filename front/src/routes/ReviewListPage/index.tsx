@@ -1,8 +1,9 @@
-import { loadReviews } from 'actions/post'
+import { loadReviews, removeReview } from 'actions/post'
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { Fragment, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
+import dayjs from 'dayjs'
 
 import styles from './reviewlist.module.scss'
 
@@ -13,9 +14,13 @@ const ReviewListPage = () => {
   const { reviewList, loadReviewsLoading, hasMoreReview, snackInfo } = useAppSelector(
     (state) => state.post
   )
+  const { myInfo } = useAppSelector((state) => state.user)
+
+  const deleteReview = (reviewId: number) => {
+    dispatch(removeReview({ reviewId, userId: myInfo?.id }))
+  }
 
   const target = useRef(null)
-
   useEffect(() => {
     const options = {
       root: null,
@@ -35,20 +40,29 @@ const ReviewListPage = () => {
       observer.observe(target.current)
     }
     return () => observer && observer.disconnect()
-  }, [dispatch, hasMoreReview, loadReviewsLoading, reviewList, snackId, snackInfo?.Reviews])
+  }, [dispatch, hasMoreReview, loadReviewsLoading, reviewList, snackId])
 
   return (
     <div>
       {!reviewList.length && <div>리뷰가 없습니다.</div>}
       <ul>
-        {reviewList.map((review) => (
-          <Fragment key={`${review.id}-${review.UserId}`}>
-            <li className={styles.reviewcontent}>{review.content}</li>
-            <li>{review.UserId}</li>
-          </Fragment>
+        {reviewList.map((review, index) => (
+          <li key={`${review.id}-${review.UserId}-${index + 1}`} className={styles.reviewWrapper}>
+            <ul>
+              <li>{review.UserId}</li>
+              <li className={styles.createdDate}>{dayjs(review.createdAt).format('YYYY-MM-DD')}</li>
+              <li className={styles.reviewcontent}>{review.content}</li>
+              <li className={styles.reviewRating}>{review.rating}</li>
+            </ul>
+            {myInfo?.id === review.UserId && (
+              <button type='button' onClick={() => deleteReview(review.id)}>
+                삭제
+              </button>
+            )}
+          </li>
         ))}
       </ul>
-      <div ref={target}>adfadsf</div>
+      <div ref={target} />
     </div>
   )
 }

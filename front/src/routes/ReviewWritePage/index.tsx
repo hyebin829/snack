@@ -14,6 +14,13 @@ const ReviewWritePage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
+  if (!myInfo) {
+    alert('로그인이 필요합니다.')
+    navigate('/')
+  }
+
+  console.log(myInfo)
+
   const handleGetValue = (e: MouseEvent<HTMLInputElement>) => {
     setRating(Number(e.currentTarget.value))
   }
@@ -23,8 +30,6 @@ const ReviewWritePage = () => {
     if (myInfo && rating && review.trim()) {
       dispatch(addReview({ content: review, snackId, userId: myInfo.id, rating }))
       navigate(`/snack/${snackId}`)
-    } else {
-      console.log('warning')
     }
   }
 

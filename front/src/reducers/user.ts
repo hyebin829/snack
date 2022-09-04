@@ -1,5 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addFavorite, loadMyInfo, login, logout, removeFavorite } from 'actions/user'
+import {
+  addFavorite,
+  changeNickname,
+  loadMyInfo,
+  login,
+  logout,
+  removeFavorite,
+  uploadProfileimage,
+} from 'actions/user'
 import { IuserState } from 'types/user'
 
 export const initialState: IuserState = {
@@ -20,6 +28,13 @@ export const initialState: IuserState = {
   removeFavoriteLoading: false,
   removeFavoriteDone: false,
   removeFavoriteError: null,
+  changeNicknameLoading: false,
+  changeNicknameDone: false,
+  changeNicknameError: null,
+  profileImagePath: [],
+  uploadProfileImageLoading: false,
+  uploadProfileImageDone: false,
+  uploadProfileImageError: null,
 }
 
 const userSlice = createSlice({
@@ -99,6 +114,37 @@ const userSlice = createSlice({
       .addCase(removeFavorite.rejected, (state, action) => {
         state.removeFavoriteLoading = false
         state.removeFavoriteError = action.error.message
+      })
+      .addCase(changeNickname.pending, (state) => {
+        state.changeNicknameLoading = true
+        state.changeNicknameDone = false
+        state.changeNicknameError = null
+      })
+      .addCase(changeNickname.fulfilled, (state, action) => {
+        state.changeNicknameLoading = false
+        state.changeNicknameDone = true
+        if (state.myInfo) {
+          state.myInfo.nickname = action.payload.nickname
+        }
+      })
+      .addCase(changeNickname.rejected, (state, action) => {
+        state.changeNicknameLoading = false
+        state.changeNicknameError = action.error.message
+      })
+      .addCase(uploadProfileimage.pending, (state) => {
+        state.uploadProfileImageLoading = true
+        state.uploadProfileImageDone = false
+        state.uploadProfileImageError = null
+      })
+      .addCase(uploadProfileimage.fulfilled, (state, action) => {
+        state.profileImagePath = action.payload
+        state.uploadProfileImageLoading = false
+        state.uploadProfileImageDone = true
+        state.profileImagePath = null
+      })
+      .addCase(uploadProfileimage.rejected, (state, action) => {
+        state.uploadProfileImageLoading = false
+        state.uploadProfileImageError = action.error.message
       })
       .addDefaultCase((state) => state),
 })

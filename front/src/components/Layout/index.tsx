@@ -35,7 +35,7 @@ const Layout = () => {
       <Header toggleModal={toggleModal} />
       <GNB />
       <main>
-        {isModalView && <LoginModal toggleModal={toggleModal} />}
+        {isModalView && <LoginModal toggleModal={toggleModal} setIsModalView={setIsModalView} />}
         <Outlet />
       </main>
       <footer />

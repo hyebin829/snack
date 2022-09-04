@@ -1,24 +1,26 @@
-import { loadSnackInfo } from 'actions/post'
+import { loadSnackInfo, removeReview } from 'actions/post'
 import FavoriteButton from 'components/FavoriteButton'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ReviewListPage from 'routes/ReviewListPage'
+import styles from './snack.module.scss'
+import { AiFillStar } from 'react-icons/ai'
+
+import dayjs from 'dayjs'
 
 const SnackPage = () => {
   const params = useParams()
   const snackId = params.id
   const dispatch = useAppDispatch()
-  const { snackInfo } = useAppSelector((state) => state.post)
+  const { snackInfo, removeReviewLoading } = useAppSelector((state) => state.post)
   const { myInfo, addFavoriteLoading, removeFavoriteLoading } = useAppSelector(
     (state) => state.user
   )
 
   useEffect(() => {
     dispatch(loadSnackInfo({ id: snackId }))
-  }, [dispatch, snackId, addFavoriteLoading, removeFavoriteLoading])
-
-  const myReview = snackInfo?.Reviews.filter((x) => x.UserId === myInfo?.id)
+  }, [dispatch, snackId, addFavoriteLoading, removeFavoriteLoading, removeReviewLoading])
 
   const ratingArr = snackInfo?.Reviews.map((item) => item.rating)
   let ratingAverage = 0
@@ -28,25 +30,28 @@ const SnackPage = () => {
     )
   }
 
+  console.log(snackInfo)
+
   return (
     <div>
       <FavoriteButton snackInfo={snackInfo} />
-      {myReview?.length ? (
-        <div>{myReview[0].content}</div>
-      ) : (
-        <Link to={`/snack/${snackId}/review`}>리뷰 작성하기</Link>
-      )}
-      <ul>
-        <li>{isNaN(ratingAverage) ? 0 : ratingAverage}</li>
-        <li>{snackInfo?.name}</li>
-        <li>{snackInfo?.brand}</li>
-        <li>{snackInfo?.country}</li>
+      <ul className={styles.snackInfoWrapper}>
         <img
           src={`http://localhost:3065/snackimage/${snackInfo?.imagesrc}`}
           alt={snackInfo?.name}
         />
+        <li className={styles.snackName}>{snackInfo?.name}</li>
+        <li className={styles.snackBrand}>{snackInfo?.brand}</li>
+        <li className={styles.rating}>
+          평균 <AiFillStar size={14} /> {isNaN(ratingAverage) ? 0 : ratingAverage}점
+        </li>
       </ul>
 
+      {myInfo ? (
+        <Link to={`/snack/${snackId}/review`}>리뷰 작성하기</Link>
+      ) : (
+        <div>리뷰 작성을 위해 로그인이 필요합니다.</div>
+      )}
       <ReviewListPage />
     </div>
   )

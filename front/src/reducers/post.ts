@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   addReview,
+  removeReview,
   loadPopularSnack,
   loadReviews,
   loadSearchWord,
   loadSnackInfo,
   loadTopRatingSnack,
   loadTopReviewSnack,
+  loadMyReviews,
 } from 'actions/post'
 import { IpostState } from 'types/post'
 
@@ -18,7 +20,9 @@ export const initialState: IpostState = {
   snackInfo: null,
   rating: null,
   reviewList: [],
+  myReviewList: [],
   hasMoreReview: true,
+  hasMoreMyReview: true,
   loadPopularSnackLoading: false,
   loadPopularSnackDone: false,
   loadPopularSnackError: null,
@@ -40,6 +44,12 @@ export const initialState: IpostState = {
   loadReviewsLoading: false,
   loadReviewsDone: false,
   loadReviewsError: null,
+  removeReviewLoading: false,
+  removeReviewDone: false,
+  removeReviewError: null,
+  loadMyReviewsLoading: false,
+  loadMyReviewsDone: false,
+  loadMyReviewsError: null,
 }
 
 const postSlice = createSlice({
@@ -126,11 +136,14 @@ const postSlice = createSlice({
         state.addReviewError = null
       })
       .addCase(addReview.fulfilled, (state, action) => {
-        const { snackInfo } = state
+        const { snackInfo, reviewList, myReviewList } = state
+        console.log(action.payload)
         state.addReviewLoading = false
         state.addReviewDone = true
-        snackInfo?.Reviews.push(action.payload)
         state.hasMoreReview = true
+        reviewList.unshift(action.payload)
+        myReviewList.unshift(action.payload)
+        snackInfo?.Reviews.push(action.payload)
       })
       .addCase(addReview.rejected, (state, action) => {
         state.addReviewLoading = false
@@ -150,6 +163,38 @@ const postSlice = createSlice({
       .addCase(loadReviews.rejected, (state, action) => {
         state.loadReviewsLoading = false
         state.loadReviewsError = action.error.message
+      })
+      .addCase(removeReview.pending, (state) => {
+        state.removeReviewLoading = true
+        state.removeReviewDone = false
+        state.removeReviewError = null
+      })
+      .addCase(removeReview.fulfilled, (state, action) => {
+        const { snackInfo } = state
+        const { reviewList } = state
+        state.removeReviewLoading = false
+        state.removeReviewDone = true
+        snackInfo?.Reviews.filter((review) => action.payload !== review.id)
+        reviewList?.filter((review) => action.payload !== review.id)
+      })
+      .addCase(removeReview.rejected, (state, action) => {
+        state.removeReviewLoading = false
+        state.removeReviewError = action.error.message
+      })
+      .addCase(loadMyReviews.pending, (state) => {
+        state.loadMyReviewsLoading = true
+        state.loadMyReviewsDone = false
+        state.loadMyReviewsError = null
+      })
+      .addCase(loadMyReviews.fulfilled, (state, action) => {
+        state.loadMyReviewsLoading = false
+        state.loadMyReviewsDone = true
+        state.myReviewList = state.myReviewList.concat(action.payload)
+        state.hasMoreMyReview = action.payload.length === 10
+      })
+      .addCase(loadMyReviews.rejected, (state, action) => {
+        state.loadMyReviewsLoading = false
+        state.loadMyReviewsError = action.error.message
       })
       .addDefaultCase((state) => state),
 })

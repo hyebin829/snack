@@ -101,7 +101,7 @@ router.get('/loadsnackinfo/:id', async (req, res, next) => {
       include: [
         {
           model: Review,
-          attributes: ['id', 'SnackId', 'content', 'rating', 'UserId'],
+          attributes: ['id', 'SnackId', 'content', 'rating', 'UserId', 'createdAt'],
         },
         {
           model: Review,
@@ -138,10 +138,19 @@ router.post('/:snackId/review', async (req, res, next) => {
       UserId: req.body.userId,
       rating: req.body.rating,
     })
+
     if (!snack) {
       return res.status(403).send('과자 정보가 없습니다.')
     }
-    res.status(201).json(review)
+    const snackInfo = await Snack.findAll({
+      where: { id: req.params.snackId },
+      attributes: ['name', 'brand', 'imagesrc'],
+      raw: true,
+    })
+
+    const reviewObj = { ...review.dataValues, ...snackInfo[0] }
+
+    res.status(201).json(reviewObj)
   } catch (error) {
     console.error(error)
     next(error)
@@ -178,12 +187,69 @@ router.get('/:snackId/review', async (req, res, next) => {
           as: 'Likers',
           attributes: ['id'],
         },
+        { model: Snack, attributes: ['name', 'brand', 'imagesrc'] },
       ],
     })
     res.status(201).json(reviews)
     console.log(reviews)
   } catch (error) {
     console.error(error)
+  }
+})
+
+router.get('/:userId/myreview', async (req, res, next) => {
+  const where = { UserId: parseInt(req.params.userId, 10) }
+  console.log(req.query.lastId)
+  try {
+    if (parseInt(req.query.lastId, 10)) {
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
+    }
+    const reviews = await Review.findAll({
+      where,
+      limit: 10,
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
+        { model: Snack, attributes: ['name', 'brand', 'imagesrc'] },
+      ],
+    })
+    console.log(req.query.lastId)
+    res.status(201).json(reviews)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+router.delete('/:reviewId', async (req, res, next) => {
+  console.log(req.user)
+  try {
+    await Review.destroy({
+      where: {
+        id: req.params.reviewId,
+        UserId: req.user.id,
+      },
+    })
+    res.status(200).json({ reviewId: parseInt(req.params.reviewId, 10) })
+  } catch (error) {
+    console.error(error)
+    next(error)
   }
 })
 

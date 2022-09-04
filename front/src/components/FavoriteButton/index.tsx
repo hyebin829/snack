@@ -1,8 +1,9 @@
 import { addFavorite, removeFavorite } from 'actions/user'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useParams } from 'react-router-dom'
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io'
 import { IsnackInfo } from 'types/post'
+import styles from './favoriteButton.module.scss'
 
 type snackinfo = {
   snackInfo: IsnackInfo | null
@@ -25,12 +26,12 @@ const FavoriteButton = ({ snackInfo }: snackinfo) => {
   }
 
   return followed?.length ? (
-    <button type='button' onClick={onClickremoveFavoriteButton}>
-      <AiFillStar size={25} />
+    <button type='button' onClick={onClickremoveFavoriteButton} className={styles.favoriteButton}>
+      <IoMdHeart size={25} color='pink' />
     </button>
   ) : (
-    <button type='button' onClick={onClickaddFavoriteButton}>
-      <AiOutlineStar size={25} />
+    <button type='button' onClick={onClickaddFavoriteButton} className={styles.favoriteButton}>
+      <IoMdHeartEmpty size={25} color='pink' />
     </button>
   )
 }
