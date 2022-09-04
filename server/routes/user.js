@@ -4,6 +4,7 @@ const passport = require('passport')
 const axios = require('axios')
 const multer = require('multer')
 const fs = require('fs')
+const path = require('path')
 
 const { User, Review, Image, Comment, Snack } = require('../models')
 
@@ -32,13 +33,13 @@ router.patch('/profileimage', upload.single('profileimage'), async (req, res, ne
     console.log(req)
     await User.update(
       {
-        profileimagesrc: req.body.profileimage,
+        profileimagesrc: req.file.filename,
       },
       {
         where: { id: req.user.id },
       }
     )
-    res.status(200).json({ profileimagesrc: req.body.profileimage })
+    res.status(200).json(req.file.filename)
   } catch (error) {
     console.error(error)
   }
