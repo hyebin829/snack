@@ -7,6 +7,9 @@ import SearchPage from './SearchPage'
 import SnackPage from './SnackPage'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import MyFavoritePage from './MyFavoritePage'
+import MyReviewPage from './MyReviewPage'
+import EditProfilePage from './EditProfilePage'
 
 const App = () => {
   return (
@@ -15,6 +18,9 @@ const App = () => {
         <Route path='/' element={<Layout />}>
           <Route path='/' element={<Home />} />
           <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/editprofile' element={<EditProfilePage />} />
+          <Route path='/myfavorite' element={<MyFavoritePage />} />
+          <Route path='/myreview' element={<MyReviewPage />} />
           <Route path='/search' element={<SearchPage />} />
           <Route path='/snack/:id' element={<SnackPage />} />
           <Route path='/snack/:id/review' element={<ReviewWritePage />} />

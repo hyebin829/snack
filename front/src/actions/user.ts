@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { snackid } from 'types/post'
-import { userNickname } from 'types/user'
+import { profileImage, userNickname } from 'types/user'
 
 axios.defaults.baseURL = 'http://localhost:3065'
 axios.defaults.withCredentials = true
@@ -35,6 +35,15 @@ export const changeNickname = createAsyncThunk(
   'user/changeNickname',
   async (data: userNickname) => {
     const response = await axios.patch(`/user/nickname`, data)
+    return response.data
+  }
+)
+
+export const uploadProfileimage = createAsyncThunk(
+  'user/uploadProfileimage',
+  async (data: profileImage) => {
+    console.log(data)
+    const response = await axios.patch(`/user/profileimage`, data)
     return response.data
   }
 )

@@ -19,6 +19,10 @@ export interface IuserState {
   changeNicknameLoading: boolean
   changeNicknameDone: boolean
   changeNicknameError: null | string | undefined
+  profileImagePath: profileImage[] | null
+  uploadProfileImageLoading: boolean
+  uploadProfileImageDone: boolean
+  uploadProfileImageError: null | string | undefined
 }
 
 interface ImyInfo {
@@ -65,4 +69,8 @@ interface IuserInfo {}
 
 export type userNickname = {
   nickname: string | undefined
+}
+
+export type profileImage = {
+  profileimage: FormData
 }

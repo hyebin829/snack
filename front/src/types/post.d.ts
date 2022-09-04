@@ -6,7 +6,9 @@ export interface IpostState {
   snackInfo: IsnackInfo | null
   rating: null | number
   reviewList: Ireview[]
+  myReviewList: Ireview[]
   hasMoreReview: boolean
+  hasMoreMyReview: boolean
   loadPopularSnackLoading: boolean
   loadPopularSnackDone: boolean
   loadPopularSnackError: null | string | undefined
@@ -31,6 +33,9 @@ export interface IpostState {
   removeReviewLoading: boolean
   removeReviewDone: boolean
   removeReviewError: null | string | undefined
+  loadMyReviewsLoading: boolean
+  loadMyReviewsDone: boolean
+  loadMyReviewsError: null | string | undefined
 }
 
 interface IpopularSnack {
@@ -96,6 +101,9 @@ export interface Ireview {
   UserId: number
   User: { id: number; nickname: string }
   createdAt: date
+  name: string
+  brand: string
+  imagesrc: string
 }
 
 export type word = {
@@ -118,7 +126,12 @@ export type reviewId = {
   snackId: string | undefined
 }
 
-export type myReview = {
+export type userReview = {
   reviewId: number | undefined
+  userId: number | undefined
+}
+
+export type myId = {
+  lastId: number | undefined
   userId: number | undefined
 }

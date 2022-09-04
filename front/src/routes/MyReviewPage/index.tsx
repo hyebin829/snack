@@ -42,11 +42,11 @@ const MyReviewPage = () => {
             <ul className={styles.review}>
               <li>
                 <img
-                  src={`http://localhost:3065/snackimage/${review.Snack.imagesrc}`}
-                  alt={review.Snack.imagesrc}
+                  src={`http://localhost:3065/snackimage/${review.imagesrc}`}
+                  alt={review.imagesrc}
                 />
-                <span>{review.Snack.name}</span>
-                <span>{review.Snack.brand}</span>
+                <span>{review.name}</span>
+                <span>{review.brand}</span>
               </li>
               <li>{review.content}</li>
             </ul>

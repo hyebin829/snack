@@ -30,6 +30,7 @@ app.use(
   })
 )
 
+app.use('/profileimage', express.static(path.join(__dirname, 'profileimage')))
 app.use('/snackimage', express.static(path.join(__dirname, 'snackimage')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

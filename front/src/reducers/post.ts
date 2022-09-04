@@ -137,6 +137,7 @@ const postSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         const { snackInfo, reviewList, myReviewList } = state
+        console.log(action.payload)
         state.addReviewLoading = false
         state.addReviewDone = true
         state.hasMoreReview = true

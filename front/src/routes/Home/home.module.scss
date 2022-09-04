@@ -16,6 +16,7 @@
     align-items: center;
     justify-content: space-evenly;
     height: 200px;
+    margin-right: 5px;
     color: colors.$BLACK;
     border: 1px solid colors.$BACKGROUND;
     border-radius: 5px;
@@ -23,15 +24,35 @@
     .infoWrapper {
       display: flex;
       flex-direction: column;
+      gap: 2px;
       align-items: center;
       width: 85%;
 
       li {
         align-self: flex-start;
         width: 100%;
+        margin-bottom: 1px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+
+      li:nth-child(2) {
+        font-size: 16px;
+        font-weight: 400;
+        color: colors.$FONT;
+      }
+
+      li:nth-child(3) {
+        font-size: 14px;
+        font-weight: 300;
+        color: colors.$G;
+      }
+
+      .heartCount {
+        display: flex;
+        gap: 3px;
+        align-items: center;
       }
     }
   }

@@ -1,3 +1,15 @@
-.reviewcontent {
-  height: 100px;
+@use '/src/styles/constants/colors';
+
+.reviewWrapper {
+  margin-bottom: 20px;
+  border-bottom: 1px solid colors.$BACKGROUND;
+
+  .reviewcontent {
+    height: 100px;
+  }
+
+  .createdDate {
+    font-size: 15px;
+    color: colors.$G;
+  }
 }

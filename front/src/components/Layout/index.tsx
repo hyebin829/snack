@@ -3,7 +3,7 @@ import GNB from 'components/GNB'
 import Header from 'components/Header'
 import LoginModal from 'components/LoginModal'
 import { useAppDispatch } from 'hooks/useRedux'
-import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import styles from './layout.module.scss'
 

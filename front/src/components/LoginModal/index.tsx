@@ -4,7 +4,7 @@ import styles from './loginmodal.module.scss'
 import { IoMdClose } from 'react-icons/io'
 import { Dispatch, MouseEvent, SetStateAction, useRef } from 'react'
 
-export type ToggleModal = {
+type ToggleModal = {
   toggleModal: React.MouseEventHandler<HTMLButtonElement>
   setIsModalView: Dispatch<SetStateAction<boolean>>
 }

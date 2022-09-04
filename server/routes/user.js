@@ -2,8 +2,47 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const axios = require('axios')
+const multer = require('multer')
+const fs = require('fs')
 
 const { User, Review, Image, Comment, Snack } = require('../models')
+
+try {
+  fs.accessSync('profileimage')
+} catch (error) {
+  fs.mkdirSync('profileimage')
+}
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'profileimage')
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname)
+      const basename = path.basename(file.originalname, ext)
+      done(null, basename + new Date().getTime() + ext)
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+})
+
+router.patch('/profileimage', upload.single('profileimage'), async (req, res, next) => {
+  try {
+    console.log(req)
+    await User.update(
+      {
+        profileimagesrc: req.body.profileimage,
+      },
+      {
+        where: { id: req.user.id },
+      }
+    )
+    res.status(200).json({ profileimagesrc: req.body.profileimage })
+  } catch (error) {
+    console.error(error)
+  }
+})
 
 router.get('/', async (req, res, next) => {
   try {
@@ -97,6 +136,31 @@ router.delete('/:snackId/favorite', async (req, res, next) => {
     res.status(201).json({ snackId: parseInt(req.params.snackId, 10), userId: req.user.id })
   } catch (error) {
     console.error(error)
+  }
+})
+
+router.patch('/nickname', async (req, res, next) => {
+  try {
+    const exNickname = await User.findOne({
+      where: {
+        nickname: req.body.nickname,
+      },
+    })
+    if (exNickname) {
+      return res.status(403).send('이미 사용중인 닉네임입니다.')
+    }
+    await User.update(
+      {
+        nickname: req.body.nickname,
+      },
+      {
+        where: { id: req.user.id },
+      }
+    )
+    res.status(201).json({ nickname: req.body.nickname })
+  } catch (error) {
+    console.error(error)
+    next(error)
   }
 })
 

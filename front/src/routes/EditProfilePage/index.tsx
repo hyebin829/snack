@@ -1,13 +1,18 @@
 /* eslint-disable no-irregular-whitespace */
-import { changeNickname, loadMyInfo } from 'actions/user'
+import { changeNickname, loadMyInfo, uploadProfileimage } from 'actions/user'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, FormEventHandler, useEffect, useRef, useState } from 'react'
 import styles from './editprofile.module.scss'
+import { IoPersonCircle } from 'react-icons/io5'
 
 const EditProfilePage = () => {
-  const { myInfo, changeNicknameError, changeNicknameDone, changeNicknameLoading } = useAppSelector(
-    (state) => state.user
-  )
+  const {
+    myInfo,
+    changeNicknameError,
+    changeNicknameDone,
+    changeNicknameLoading,
+    profileImagePath,
+  } = useAppSelector((state) => state.user)
   const [nickname, setNickname] = useState(myInfo?.nickname)
   const [nicknameValueLengthError, setNicknameValueLengthError] = useState(false)
   const [checkBlank, setCheckBlank] = useState(false)
@@ -38,10 +43,52 @@ const EditProfilePage = () => {
     }
   }
 
+  const inputFile = useRef(null)
+  console.log(inputFile.current)
+
+  const onChangeProfileImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    if (e.target.files.length > 1) {
+      console.log('dont')
+    } else {
+      const imageFormData = new FormData()
+      console.log(e)
+      console.log(imageFormData)
+
+      //
+      ;[].forEach.call(e.target.files, (f) => {
+        imageFormData.append('image', f)
+      })
+
+      console.log(e.target.files)
+      console.log(imageFormData.entries())
+      dispatch(uploadProfileimage({ profileimage: imageFormData }))
+    }
+  }
+
   if (!myInfo) return <div className={styles.needLoginMessage}>로그인이 필요합니다.</div>
 
   return (
     <div>
+      <div className={styles.profileimageWrapper}>
+        {myInfo.profileimagesrc ? (
+          <img src={`http://localhost:3065/profileimage/${profileImagePath}`} alt='my profile' />
+        ) : (
+          <IoPersonCircle />
+        )}
+        <form encType='multipart/form-data'>
+          <label htmlFor='file'>파일 선택</label>
+          <input
+            type='file'
+            id='file'
+            accept='image/*'
+            ref={inputFile}
+            onChange={onChangeProfileImage}
+            formEncType='multipart/form-data'
+          />
+          <button type='submit'>변경</button>
+        </form>
+      </div>
       <form onSubmit={onSubmitNickname}>
         <input type='text' defaultValue={myInfo?.nickname} onChange={onChangeNickname} />
         {!checkBlank && !nicknameValueLengthError && <button type='submit'>확인</button>}

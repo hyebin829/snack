@@ -6,6 +6,7 @@ import {
   login,
   logout,
   removeFavorite,
+  uploadProfileimage,
 } from 'actions/user'
 import { IuserState } from 'types/user'
 
@@ -30,6 +31,10 @@ export const initialState: IuserState = {
   changeNicknameLoading: false,
   changeNicknameDone: false,
   changeNicknameError: null,
+  profileImagePath: [],
+  uploadProfileImageLoading: false,
+  uploadProfileImageDone: false,
+  uploadProfileImageError: null,
 }
 
 const userSlice = createSlice({
@@ -125,6 +130,21 @@ const userSlice = createSlice({
       .addCase(changeNickname.rejected, (state, action) => {
         state.changeNicknameLoading = false
         state.changeNicknameError = action.error.message
+      })
+      .addCase(uploadProfileimage.pending, (state) => {
+        state.uploadProfileImageLoading = true
+        state.uploadProfileImageDone = false
+        state.uploadProfileImageError = null
+      })
+      .addCase(uploadProfileimage.fulfilled, (state, action) => {
+        state.profileImagePath = action.payload
+        state.uploadProfileImageLoading = false
+        state.uploadProfileImageDone = true
+        state.profileImagePath = null
+      })
+      .addCase(uploadProfileimage.rejected, (state, action) => {
+        state.uploadProfileImageLoading = false
+        state.uploadProfileImageError = action.error.message
       })
       .addDefaultCase((state) => state),
 })
