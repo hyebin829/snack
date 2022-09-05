@@ -138,6 +138,7 @@ const postSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         const { snackInfo, reviewList, myReviewList } = state
+        console.log(action.payload)
         state.addReviewLoading = false
         state.addReviewDone = true
         state.hasMoreReview = true
@@ -170,9 +171,12 @@ const postSlice = createSlice({
         state.removeReviewError = null
       })
       .addCase(removeReview.fulfilled, (state, action) => {
-        const { reviewList } = state
+        const { reviewList, snackInfo } = state
         if (reviewList) {
           _remove(reviewList, { id: action.payload.reviewId })
+        }
+        if (snackInfo) {
+          _remove(snackInfo.Reviews, { id: action.payload.reviewId })
         }
         state.removeReviewLoading = false
         state.removeReviewDone = true
