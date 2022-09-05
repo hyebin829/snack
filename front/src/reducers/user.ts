@@ -1,3 +1,4 @@
+import _remove from 'lodash/remove'
 import { createSlice } from '@reduxjs/toolkit'
 import {
   addFavorite,
@@ -92,9 +93,9 @@ const userSlice = createSlice({
       })
       .addCase(addFavorite.fulfilled, (state, action) => {
         const { myInfo } = state
+        myInfo?.Favorited.push(action.payload)
         state.addFavoriteLoading = false
         state.addFavoriteDone = true
-        myInfo?.Favorited.push(action.payload)
       })
       .addCase(addFavorite.rejected, (state, action) => {
         state.addFavoriteLoading = false
@@ -107,9 +108,11 @@ const userSlice = createSlice({
       })
       .addCase(removeFavorite.fulfilled, (state, action) => {
         const { myInfo } = state
+        if (myInfo) {
+          _remove(myInfo.Favorited, { id: action.payload.id })
+        }
         state.removeFavoriteLoading = false
         state.removeFavoriteDone = true
-        myInfo?.Favorited.filter((favorite) => favorite.id !== action.payload.SnackId)
       })
       .addCase(removeFavorite.rejected, (state, action) => {
         state.removeFavoriteLoading = false
@@ -138,9 +141,12 @@ const userSlice = createSlice({
       })
       .addCase(uploadProfileimage.fulfilled, (state, action) => {
         state.profileImagePath = action.payload
+        const { myInfo } = state
+        if (myInfo) {
+          myInfo.profileimagesrc = action.payload
+        }
         state.uploadProfileImageLoading = false
         state.uploadProfileImageDone = true
-        state.profileImagePath = null
       })
       .addCase(uploadProfileimage.rejected, (state, action) => {
         state.uploadProfileImageLoading = false

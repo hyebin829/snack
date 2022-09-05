@@ -1,4 +1,4 @@
-import { loadSnackInfo, removeReview } from 'actions/post'
+import { loadSnackInfo } from 'actions/post'
 import FavoriteButton from 'components/FavoriteButton'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect } from 'react'
@@ -7,20 +7,18 @@ import ReviewListPage from 'routes/ReviewListPage'
 import styles from './snack.module.scss'
 import { AiFillStar } from 'react-icons/ai'
 
-import dayjs from 'dayjs'
-
 const SnackPage = () => {
   const params = useParams()
   const snackId = params.id
   const dispatch = useAppDispatch()
-  const { snackInfo, removeReviewLoading } = useAppSelector((state) => state.post)
-  const { myInfo, addFavoriteLoading, removeFavoriteLoading } = useAppSelector(
-    (state) => state.user
-  )
+  const { snackInfo } = useAppSelector((state) => state.post)
+  const { myInfo } = useAppSelector((state) => state.user)
+
+  console.log(myInfo)
 
   useEffect(() => {
     dispatch(loadSnackInfo({ id: snackId }))
-  }, [dispatch, snackId, addFavoriteLoading, removeFavoriteLoading, removeReviewLoading])
+  }, [dispatch, snackId])
 
   const ratingArr = snackInfo?.Reviews.map((item) => item.rating)
   let ratingAverage = 0
@@ -30,11 +28,9 @@ const SnackPage = () => {
     )
   }
 
-  console.log(snackInfo)
-
   return (
     <div>
-      <FavoriteButton snackInfo={snackInfo} />
+      <FavoriteButton />
       <ul className={styles.snackInfoWrapper}>
         <img
           src={`http://localhost:3065/snackimage/${snackInfo?.imagesrc}`}

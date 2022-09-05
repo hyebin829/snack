@@ -113,13 +113,14 @@ router.patch('/:snackId/favorite', async (req, res, next) => {
   try {
     const snack = await Snack.findOne({
       where: { id: req.params.snackId },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
     })
     if (!snack) {
       res.status(403).send('존재하지 않는 과자입니다.')
     }
     await snack.addFavorites(req.user.id)
     console.log(snack)
-    res.status(201).json({ snackId: parseInt(req.params.snackId, 10), userId: req.user.id })
+    res.status(201).json(snack)
   } catch (error) {
     console.error(error)
   }
@@ -134,7 +135,7 @@ router.delete('/:snackId/favorite', async (req, res, next) => {
       res.status(403).send('존재하지 않는 과자입니다.')
     }
     await snack.removeFavorites(req.user.id)
-    res.status(201).json({ snackId: parseInt(req.params.snackId, 10), userId: req.user.id })
+    res.status(201).json(snack)
   } catch (error) {
     console.error(error)
   }
