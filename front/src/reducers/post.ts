@@ -1,3 +1,4 @@
+import _remove from 'lodash/remove'
 import { createSlice } from '@reduxjs/toolkit'
 import {
   addReview,
@@ -137,7 +138,6 @@ const postSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         const { snackInfo, reviewList, myReviewList } = state
-        console.log(action.payload)
         state.addReviewLoading = false
         state.addReviewDone = true
         state.hasMoreReview = true
@@ -170,12 +170,12 @@ const postSlice = createSlice({
         state.removeReviewError = null
       })
       .addCase(removeReview.fulfilled, (state, action) => {
-        const { snackInfo } = state
         const { reviewList } = state
+        if (reviewList) {
+          _remove(reviewList, { id: action.payload.reviewId })
+        }
         state.removeReviewLoading = false
         state.removeReviewDone = true
-        snackInfo?.Reviews.filter((review) => action.payload !== review.id)
-        reviewList?.filter((review) => action.payload !== review.id)
       })
       .addCase(removeReview.rejected, (state, action) => {
         state.removeReviewLoading = false
