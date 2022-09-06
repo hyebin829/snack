@@ -14,6 +14,15 @@ try {
   fs.mkdirSync('profileimage')
 }
 
+const filesizeErrorHandler = (error, req, res, next) => {
+  if (error) {
+    res.status(400).send('20mb 이하의 이미지만 가능합니다.')
+    return
+  } else {
+    next()
+  }
+}
+
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
@@ -28,21 +37,24 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 },
 })
 
-router.patch('/profileimage', upload.single('profileimage'), async (req, res, next) => {
+router.patch('/profileimage', upload.none('profileimage'), async (req, res, error) => {
   try {
-    console.log(req)
     await User.update(
       {
-        profileimagesrc: req.file.filename,
+        profileimagesrc: req.body.imagesrc,
       },
       {
         where: { id: req.user.id },
       }
     )
-    res.status(200).json(req.file.filename)
+    res.status(200).json(req.body.imagesrc)
   } catch (error) {
     console.error(error)
   }
+})
+
+router.post('/image', upload.single('profileimage'), filesizeErrorHandler, async (req, res, error) => {
+  res.json(req.file.filename)
 })
 
 router.get('/', async (req, res, next) => {

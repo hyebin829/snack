@@ -1,17 +1,21 @@
 /* eslint-disable no-irregular-whitespace */
-import { changeNickname, loadMyInfo, uploadProfileimage } from 'actions/user'
+import { changeNickname, loadMyInfo, editProfileimage, uploadImage } from 'actions/user'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { ChangeEvent, FormEvent, FormEventHandler, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import styles from './editprofile.module.scss'
 import { IoPersonCircle } from 'react-icons/io5'
 
 const EditProfilePage = () => {
   const {
     myInfo,
+    loadMyInfoDone,
     changeNicknameError,
     changeNicknameDone,
     changeNicknameLoading,
+    editProfileImageDone,
+    uploadImageDone,
     profileImagePath,
+    uploadImageError,
   } = useAppSelector((state) => state.user)
   const [nickname, setNickname] = useState(myInfo?.nickname)
   const [nicknameValueLengthError, setNicknameValueLengthError] = useState(false)
@@ -19,9 +23,10 @@ const EditProfilePage = () => {
   const [viewMessage, setViewMessage] = useState(false)
 
   const dispatch = useAppDispatch()
+
   useEffect(() => {
     dispatch(loadMyInfo)
-  }, [changeNicknameLoading, dispatch])
+  }, [changeNicknameLoading, editProfileImageDone, dispatch])
 
   const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
     setViewMessage(false)
@@ -43,58 +48,68 @@ const EditProfilePage = () => {
     }
   }
 
-  const inputFile = useRef(null)
-  console.log(inputFile.current)
-
   const onChangeProfileImage = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return
-    if (e.target.files.length > 1) {
-      console.log('dont')
-    } else {
-      const imageFormData = new FormData()
-      console.log(e)
-      console.log(imageFormData)
+    if (!e.target.files?.length) return
 
-      //
-      ;[].forEach.call(e.target.files, (f) => {
-        imageFormData.append('image', f)
-      })
+    const imageFormData = new FormData()
 
-      console.log(e.target.files)
-      console.log(imageFormData.entries())
-      dispatch(uploadProfileimage({ profileimage: imageFormData }))
-    }
+    ;[].forEach.call(e.target.files, (f) => {
+      imageFormData.append('profileimage', f)
+    })
+    dispatch(uploadImage(imageFormData))
   }
 
-  if (!myInfo) return <div className={styles.needLoginMessage}>로그인이 필요합니다.</div>
+  const onSubmitProfileImage = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    dispatch(editProfileimage({ imagesrc: profileImagePath }))
+    setViewMessage(true)
+  }
+
+  if (loadMyInfoDone && !myInfo)
+    return <div className={styles.needLoginMessage}>로그인이 필요합니다.</div>
 
   return (
     <div>
       <div className={styles.profileimageWrapper}>
-        {myInfo.profileimagesrc ? (
-          <img src={`http://localhost:3065/profileimage/${profileImagePath}`} alt='my profile' />
+        {myInfo?.profileimagesrc ? (
+          <img
+            src={`http://localhost:3065/profileimage/${myInfo.profileimagesrc}`}
+            alt='my profile'
+          />
         ) : (
           <IoPersonCircle />
         )}
-        <form encType='multipart/form-data'>
+        <form
+          onSubmit={onSubmitProfileImage}
+          encType='multipart/form-data'
+          className={styles.editProfileimageForm}
+        >
           <label htmlFor='file'>파일 선택</label>
           <input
             type='file'
             id='file'
             accept='image/*'
-            ref={inputFile}
             onChange={onChangeProfileImage}
             formEncType='multipart/form-data'
+            name='profileimage'
           />
-          <button type='submit'>변경</button>
+          {uploadImageDone ? (
+            <button type='submit'>변경하기</button>
+          ) : (
+            <button type='button' disabled>
+              변경하기
+            </button>
+          )}
         </form>
       </div>
+      {uploadImageError && <div>{uploadImageError}</div>}
       <form onSubmit={onSubmitNickname}>
         <input type='text' defaultValue={myInfo?.nickname} onChange={onChangeNickname} />
         {!checkBlank && !nicknameValueLengthError && <button type='submit'>확인</button>}
       </form>
       {changeNicknameError && viewMessage && <div>이미 사용중인 닉네임입니다.</div>}
       {changeNicknameDone && viewMessage && <div>변경되었습니다</div>}
+      {editProfileImageDone && viewMessage && <div>변경되었습니다</div>}
       {nicknameValueLengthError && <div>3글자 이상 10글자 이하로 작성해주세요.</div>}
       {checkBlank && <div>공백문자는 입력 불가능합니다.</div>}
     </div>

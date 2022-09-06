@@ -7,7 +7,8 @@ import {
   login,
   logout,
   removeFavorite,
-  uploadProfileimage,
+  uploadImage,
+  editProfileimage,
 } from 'actions/user'
 import { IuserState } from 'types/user'
 
@@ -33,9 +34,12 @@ export const initialState: IuserState = {
   changeNicknameDone: false,
   changeNicknameError: null,
   profileImagePath: [],
-  uploadProfileImageLoading: false,
-  uploadProfileImageDone: false,
-  uploadProfileImageError: null,
+  uploadImageLoading: false,
+  uploadImageDone: false,
+  uploadImageError: null,
+  editProfileImageLoading: false,
+  editProfileImageDone: false,
+  editProfileImageError: null,
 }
 
 const userSlice = createSlice({
@@ -130,27 +134,38 @@ const userSlice = createSlice({
           state.myInfo.nickname = action.payload.nickname
         }
       })
-      .addCase(changeNickname.rejected, (state, action) => {
-        state.changeNicknameLoading = false
-        state.changeNicknameError = action.error.message
+      .addCase(uploadImage.pending, (state) => {
+        state.uploadImageLoading = true
+        state.uploadImageDone = false
+        state.uploadImageError = null
       })
-      .addCase(uploadProfileimage.pending, (state) => {
-        state.uploadProfileImageLoading = true
-        state.uploadProfileImageDone = false
-        state.uploadProfileImageError = null
-      })
-      .addCase(uploadProfileimage.fulfilled, (state, action) => {
+      .addCase(uploadImage.fulfilled, (state, action) => {
         state.profileImagePath = action.payload
+        state.uploadImageLoading = false
+        state.uploadImageDone = true
+      })
+      .addCase(uploadImage.rejected, (state, action) => {
+        state.uploadImageLoading = false
+        state.uploadImageError = `${action.payload}`
+      })
+      .addCase(editProfileimage.pending, (state) => {
+        state.editProfileImageLoading = true
+        state.editProfileImageDone = false
+        state.editProfileImageError = null
+      })
+      .addCase(editProfileimage.fulfilled, (state, action) => {
+        state.profileImagePath = []
         const { myInfo } = state
         if (myInfo) {
           myInfo.profileimagesrc = action.payload
         }
-        state.uploadProfileImageLoading = false
-        state.uploadProfileImageDone = true
+        state.editProfileImageLoading = false
+        state.editProfileImageDone = true
+        state.uploadImageError = null
       })
-      .addCase(uploadProfileimage.rejected, (state, action) => {
-        state.uploadProfileImageLoading = false
-        state.uploadProfileImageError = action.error.message
+      .addCase(editProfileimage.rejected, (state, action) => {
+        state.editProfileImageLoading = false
+        state.editProfileImageError = action.error.message
       })
       .addDefaultCase((state) => state),
 })
