@@ -70,6 +70,8 @@ const userSlice = createSlice({
       .addCase(loadMyInfo.fulfilled, (state, action) => {
         state.loadMyInfoLoading = false
         state.loadMyInfoDone = true
+        state.changeNicknameDone = false
+        state.editProfileImageDone = false
         state.myInfo = action.payload
       })
       .addCase(loadMyInfo.rejected, (state, action) => {
@@ -147,6 +149,7 @@ const userSlice = createSlice({
       .addCase(uploadImage.rejected, (state, action) => {
         state.uploadImageLoading = false
         state.uploadImageError = `${action.payload}`
+        state.profileImagePath = []
       })
       .addCase(editProfileimage.pending, (state) => {
         state.editProfileImageLoading = true

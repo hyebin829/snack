@@ -73,3 +73,7 @@ interface IuserInfo {}
 export type userNickname = {
   nickname: string | undefined
 }
+
+export type profileImagesrc = {
+  imagesrc: string[] | null
+}
