@@ -95,15 +95,14 @@ interface Ifavorited {
 
 export interface Ireview {
   id: number
+  Snack: { name: string; brand: string; imagesrc: string }
   SnackId: number
   content: string
   rating: number
   UserId: number
-  User: { id: number; nickname: string }
+  User?: { id: number; nickname: string; profileimagesrc: string | null }
   createdAt: date
-  name: string
-  brand: string
-  imagesrc: string
+  updatedAt: date
 }
 
 export type word = {
@@ -119,6 +118,8 @@ export type review = {
   userId: number
   content: string
   rating: number | null
+  nickname: string
+  profileimagesrc: string | null
 }
 
 export type reviewId = {

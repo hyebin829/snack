@@ -5,15 +5,14 @@ import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 
+import { IoPersonCircle } from 'react-icons/io5'
 import styles from './reviewlist.module.scss'
 
 const ReviewListPage = () => {
   const params = useParams()
   const snackId = params.id
   const dispatch = useAppDispatch()
-  const { reviewList, loadReviewsLoading, hasMoreReview, snackInfo } = useAppSelector(
-    (state) => state.post
-  )
+  const { reviewList, loadReviewsLoading, hasMoreReview } = useAppSelector((state) => state.post)
   const { myInfo } = useAppSelector((state) => state.user)
 
   const deleteReview = (reviewId: number) => {
@@ -50,6 +49,17 @@ const ReviewListPage = () => {
           <li key={`${review.id}-${review.UserId}-${index + 1}`} className={styles.reviewWrapper}>
             <ul>
               <li>{review.UserId}</li>
+              <li>{review.User?.nickname}</li>
+              {review.User?.profileimagesrc ? (
+                <li>
+                  <img
+                    src={`http://localhost:3065/profileimage/${review.User?.profileimagesrc}`}
+                    alt='profile'
+                  />
+                </li>
+              ) : (
+                <IoPersonCircle size={35} />
+              )}
               <li className={styles.createdDate}>{dayjs(review.createdAt).format('YYYY-MM-DD')}</li>
               <li className={styles.reviewcontent}>{review.content}</li>
               <li className={styles.reviewRating}>{review.rating}</li>

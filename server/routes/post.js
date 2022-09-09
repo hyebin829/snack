@@ -148,7 +148,13 @@ router.post('/:snackId/review', async (req, res, next) => {
       raw: true,
     })
 
-    const reviewObj = { ...review.dataValues, ...snackInfo[0] }
+    const userInfo = await User.findAll({
+      where: { id: req.body.userId },
+      attributes: ['id', 'nickname', 'profileimagesrc'],
+      raw: true,
+    })
+
+    const reviewObj = { ...review.dataValues, Snack: { ...snackInfo[0] }, User: { ...userInfo[0] } }
 
     res.status(201).json(reviewObj)
   } catch (error) {
@@ -169,25 +175,8 @@ router.get('/:snackId/review', async (req, res, next) => {
       limit: 10,
       order: [['createdAt', 'DESC']],
       include: [
-        {
-          model: User,
-          attributes: ['id', 'nickname'],
-        },
-        {
-          model: Comment,
-          include: [
-            {
-              model: User,
-              attributes: ['id', 'nickname'],
-            },
-          ],
-        },
-        {
-          model: User,
-          as: 'Likers',
-          attributes: ['id'],
-        },
         { model: Snack, attributes: ['name', 'brand', 'imagesrc'] },
+        { model: User, attributes: ['id', 'nickname', 'profileimagesrc'] },
       ],
     })
     res.status(201).json(reviews)
@@ -212,20 +201,6 @@ router.get('/:userId/myreview', async (req, res, next) => {
         {
           model: User,
           attributes: ['id', 'nickname'],
-        },
-        {
-          model: Comment,
-          include: [
-            {
-              model: User,
-              attributes: ['id', 'nickname'],
-            },
-          ],
-        },
-        {
-          model: User,
-          as: 'Likers',
-          attributes: ['id'],
         },
         { model: Snack, attributes: ['name', 'brand', 'imagesrc'] },
       ],
