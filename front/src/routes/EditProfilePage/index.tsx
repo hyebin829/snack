@@ -52,6 +52,7 @@ const EditProfilePage = () => {
     e.preventDefault()
     if (!nickname || !nickname.trim() || nickname === myInfo?.nickname) {
       e.preventDefault()
+      navigate('/profile')
     } else {
       dispatch(changeNickname({ nickname: nickname.trim() }))
       navigate('/profile')
@@ -99,16 +100,9 @@ const EditProfilePage = () => {
           {uploadImageError && <div>{uploadImageError}</div>}
 
           <input type='text' defaultValue={myInfo?.nickname} onChange={onChangeNickname} />
-          {!uploadImageDone ||
-          checkBlank ||
-          nicknameValueLengthError ||
-          nickname === myInfo?.nickname ? (
-            <button type='button' disabled>
-              저장
-            </button>
-          ) : (
-            <button type='submit'>저장</button>
-          )}
+          <button type='submit' disabled={checkBlank || nicknameValueLengthError}>
+            저장
+          </button>
         </form>
         {changeNicknameError && <div>이미 사용중인 닉네임입니다.</div>}
         {nicknameValueLengthError && <div>3글자 이상 10글자 이하로 작성해주세요.</div>}
