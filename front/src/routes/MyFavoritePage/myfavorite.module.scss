@@ -7,6 +7,13 @@
     font-weight: 500;
   }
 
+  .favoriteButton {
+    position: absolute;
+    top: 10px;
+    right: -10px;
+    z-index: 10;
+  }
+
   .favoriteListWrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -14,6 +21,7 @@
     justify-items: center;
 
     .snackWrapper {
+      position: relative;
       padding: 15px 20px;
       border: 1px solid colors.$BACKGROUND;
       border-radius: 5px;

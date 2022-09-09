@@ -1,13 +1,15 @@
 import { addFavorite, removeFavorite } from 'actions/user'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { useParams } from 'react-router-dom'
+
 import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io'
 
 import styles from './favoriteButton.module.scss'
 
-const FavoriteButton = () => {
-  const params = useParams()
-  const snackId = params.id
+type snackid = {
+  snackId: string | undefined
+}
+
+const FavoriteButton = ({ snackId }: snackid) => {
   const dispatch = useAppDispatch()
   const { myInfo } = useAppSelector((state) => state.user)
 

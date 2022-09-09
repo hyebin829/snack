@@ -1,3 +1,4 @@
+import FavoriteButton from 'components/FavoriteButton'
 import { useAppSelector } from 'hooks/useRedux'
 import { Link } from 'react-router-dom'
 import styles from './myfavorite.module.scss'
@@ -10,8 +11,8 @@ const MyFavoritePage = () => {
       <h2>좋아요 누른 과자</h2>
       <ul className={styles.favoriteListWrapper}>
         {myInfo?.Favorited.map((snack) => (
-          <Link to={`/snack/${snack.id}`} key={snack.id}>
-            <li className={styles.snackWrapper}>
+          <li className={styles.snackWrapper} key={snack.id}>
+            <Link to={`/snack/${snack.id}`}>
               <ul>
                 <li>
                   <img
@@ -22,8 +23,11 @@ const MyFavoritePage = () => {
                 <li className={styles.snackName}>{snack.name}</li>
                 <li className={styles.snackBrand}>{snack.brand}</li>
               </ul>
-            </li>
-          </Link>
+            </Link>
+            <span className={styles.favoriteButton}>
+              <FavoriteButton snackId={snack.id.toString()} />
+            </span>
+          </li>
         ))}
       </ul>
     </div>
