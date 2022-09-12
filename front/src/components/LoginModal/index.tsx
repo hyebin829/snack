@@ -2,19 +2,21 @@
 import Portal from 'Portal'
 import styles from './loginmodal.module.scss'
 import { IoMdClose } from 'react-icons/io'
-import { Dispatch, MouseEvent, SetStateAction, useRef } from 'react'
+import { MouseEvent, useRef } from 'react'
+import { closeLoginModal } from 'reducers/modal'
+import { useAppDispatch } from 'hooks/useRedux'
 
-type ToggleModal = {
-  toggleModal: React.MouseEventHandler<HTMLButtonElement>
-  setIsModalView: Dispatch<SetStateAction<boolean>>
-}
-
-const LoginModal = ({ toggleModal, setIsModalView }: ToggleModal) => {
+const LoginModal = () => {
+  const dispatch = useAppDispatch()
   const modalRef = useRef<HTMLDivElement>(null)
   const clickdiv = (e: MouseEvent<HTMLDivElement>) => {
     if (modalRef.current === e.target) {
-      setIsModalView(false)
+      dispatch(closeLoginModal())
     }
+  }
+
+  const handleCloseModal = () => {
+    dispatch(closeLoginModal())
   }
 
   return (
@@ -26,7 +28,7 @@ const LoginModal = ({ toggleModal, setIsModalView }: ToggleModal) => {
             카카오 로그인으로 <br />
             간편하게 로그인이 가능합니다.
           </div>
-          <button type='button' onClick={toggleModal}>
+          <button type='button' onClick={handleCloseModal}>
             <IoMdClose size={20} />
           </button>
           <a href='http://localhost:3065/user/kakao/login'>
