@@ -2,10 +2,11 @@ import { loadSnackInfo } from 'actions/post'
 import FavoriteButton from 'components/FavoriteButton'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ReviewListPage from 'routes/ReviewListPage'
 import styles from './snack.module.scss'
 import { AiFillStar } from 'react-icons/ai'
+import { openReviewModal } from 'reducers/modal'
 
 const SnackPage = () => {
   const params = useParams()
@@ -13,8 +14,6 @@ const SnackPage = () => {
   const dispatch = useAppDispatch()
   const { snackInfo } = useAppSelector((state) => state.post)
   const { myInfo } = useAppSelector((state) => state.user)
-
-  console.log(myInfo)
 
   useEffect(() => {
     dispatch(loadSnackInfo({ id: snackId }))
@@ -28,9 +27,13 @@ const SnackPage = () => {
     )
   }
 
+  const handleOpenReviewModal = () => {
+    dispatch(openReviewModal())
+  }
+
   return (
     <div>
-      <FavoriteButton />
+      <FavoriteButton snackId={snackId} />
       <ul className={styles.snackInfoWrapper}>
         <img
           src={`http://localhost:3065/snackimage/${snackInfo?.imagesrc}`}
@@ -44,7 +47,9 @@ const SnackPage = () => {
       </ul>
 
       {myInfo ? (
-        <Link to={`/snack/${snackId}/review`}>리뷰 작성하기</Link>
+        <button type='button' onClick={handleOpenReviewModal}>
+          리뷰 작성하기
+        </button>
       ) : (
         <div>리뷰 작성을 위해 로그인이 필요합니다.</div>
       )}
