@@ -1,16 +1,18 @@
 import { logout } from 'actions/user'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
+import { openLoginModal } from 'reducers/modal'
 import styles from './header.module.scss'
 
-type ToggleModal = {
-  toggleModal: React.MouseEventHandler<HTMLButtonElement>
-}
-const Header = ({ toggleModal }: ToggleModal) => {
+const Header = () => {
   const { myInfo } = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
 
   const handleLogout = () => {
     dispatch(logout())
+  }
+
+  const handleOpenModal = () => {
+    dispatch(openLoginModal())
   }
 
   return (
@@ -21,7 +23,7 @@ const Header = ({ toggleModal }: ToggleModal) => {
           로그아웃
         </button>
       ) : (
-        <button type='button' onClick={toggleModal}>
+        <button type='button' onClick={handleOpenModal}>
           로그인
         </button>
       )}
