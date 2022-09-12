@@ -1,4 +1,4 @@
-import { loadReviews, removeReview } from 'actions/post'
+import { loadReviews } from 'actions/post'
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect, useRef } from 'react'
@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 
 import { IoPersonCircle } from 'react-icons/io5'
 import styles from './reviewlist.module.scss'
+import { openConfirmModal } from 'reducers/modal'
 
 const ReviewListPage = () => {
   const params = useParams()
@@ -15,8 +16,8 @@ const ReviewListPage = () => {
   const { reviewList, loadReviewsLoading, hasMoreReview } = useAppSelector((state) => state.post)
   const { myInfo } = useAppSelector((state) => state.user)
 
-  const deleteReview = (reviewId: number) => {
-    dispatch(removeReview({ reviewId, userId: myInfo?.id }))
+  const handleOpenModal = (reviewId: number) => {
+    dispatch(openConfirmModal(reviewId))
   }
 
   const target = useRef(null)
@@ -65,7 +66,7 @@ const ReviewListPage = () => {
               <li className={styles.reviewRating}>{review.rating}</li>
             </ul>
             {myInfo?.id === review.UserId && (
-              <button type='button' onClick={() => deleteReview(review.id)}>
+              <button type='button' onClick={() => handleOpenModal(review.id)}>
                 삭제
               </button>
             )}
