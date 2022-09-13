@@ -10,6 +10,8 @@ import {
   loadTopRatingSnack,
   loadTopReviewSnack,
   loadMyReviews,
+  addLike,
+  removeLike,
 } from 'actions/post'
 import { IpostState } from 'types/post'
 
@@ -51,6 +53,12 @@ export const initialState: IpostState = {
   loadMyReviewsLoading: false,
   loadMyReviewsDone: false,
   loadMyReviewsError: null,
+  addLikeLoading: false,
+  addLikeDone: false,
+  addLikeError: null,
+  removeLikeLoading: false,
+  removeLikeDone: false,
+  removeLikeError: null,
 }
 
 const postSlice = createSlice({
@@ -171,15 +179,9 @@ const postSlice = createSlice({
       })
       .addCase(removeReview.fulfilled, (state, action) => {
         const { reviewList, snackInfo, myReviewList } = state
-        if (reviewList) {
-          _remove(reviewList, { id: action.payload.reviewId })
-        }
-        if (snackInfo) {
-          _remove(snackInfo.Reviews, { id: action.payload.reviewId })
-        }
-        if (myReviewList) {
-          _remove(myReviewList, { id: action.payload.reviewId })
-        }
+        if (reviewList) _remove(reviewList, { id: action.payload.reviewId })
+        if (snackInfo) _remove(snackInfo.Reviews, { id: action.payload.reviewId })
+        if (myReviewList) _remove(myReviewList, { id: action.payload.reviewId })
         state.removeReviewLoading = false
         state.removeReviewDone = true
       })
@@ -201,6 +203,42 @@ const postSlice = createSlice({
       .addCase(loadMyReviews.rejected, (state, action) => {
         state.loadMyReviewsLoading = false
         state.loadMyReviewsError = action.error.message
+      })
+      .addCase(addLike.pending, (state) => {
+        state.addLikeLoading = true
+        state.addLikeDone = false
+        state.addLikeError = null
+      })
+      .addCase(addLike.fulfilled, (state, action) => {
+        const { reviewList, myReviewList } = state
+        const review = reviewList.find((x) => x.id === action.payload.reviewId)
+        const myReview = myReviewList.find((x) => x.id === action.payload.reviewId)
+        review?.Likers.push({ id: action.payload.userId })
+        myReview?.Likers.push({ id: action.payload.userId })
+        state.addLikeLoading = false
+        state.addLikeDone = true
+      })
+      .addCase(addLike.rejected, (state, action) => {
+        state.addLikeLoading = false
+        state.addLikeError = action.error.message
+      })
+      .addCase(removeLike.pending, (state) => {
+        state.removeLikeLoading = true
+        state.removeLikeDone = false
+        state.removeLikeError = null
+      })
+      .addCase(removeLike.fulfilled, (state, action) => {
+        const { reviewList, myReviewList } = state
+        const review = reviewList.find((x) => x.id === action.payload.reviewId)
+        const myReview = myReviewList.find((x) => x.id === action.payload.reviewId)
+        if (review) _remove(review?.Likers, { id: action.payload.userId })
+        if (myReview) _remove(myReview?.Likers, { id: action.payload.userId })
+        state.removeLikeLoading = false
+        state.removeLikeDone = true
+      })
+      .addCase(removeLike.rejected, (state, action) => {
+        state.removeLikeLoading = false
+        state.removeLikeError = action.error.message
       })
       .addDefaultCase((state) => state),
 })

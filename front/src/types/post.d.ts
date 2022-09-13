@@ -36,6 +36,12 @@ export interface IpostState {
   loadMyReviewsLoading: boolean
   loadMyReviewsDone: boolean
   loadMyReviewsError: null | string | undefined
+  addLikeLoading: boolean
+  addLikeDone: boolean
+  addLikeError: null | string | undefined
+  removeLikeLoading: boolean
+  removeLikeDone: boolean
+  removeLikeError: null | string | undefined
 }
 
 interface IpopularSnack {
@@ -103,6 +109,14 @@ export interface Ireview {
   User?: { id: number; nickname: string; profileimagesrc: string | null }
   createdAt: date
   updatedAt: date
+  Likers: { id: number }[]
+}
+
+type like = {
+  ReviewId: number
+  UserId: number
+  createdAt: date
+  updatedAt: date
 }
 
 export type word = {
@@ -125,6 +139,10 @@ export type review = {
 export type reviewId = {
   lastId: number | undefined
   snackId: string | undefined
+}
+
+export type likeReviewId = {
+  reviewId: number | undefined
 }
 
 export type userReview = {

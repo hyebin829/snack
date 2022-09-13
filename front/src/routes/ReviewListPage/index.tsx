@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { IoPersonCircle } from 'react-icons/io5'
 import styles from './reviewlist.module.scss'
 import { openConfirmModal } from 'reducers/modal'
+import LikeButton from 'components/LikeButton'
 
 const ReviewListPage = () => {
   const params = useParams()
@@ -65,6 +66,7 @@ const ReviewListPage = () => {
               <li className={styles.reviewcontent}>{review.content}</li>
               <li className={styles.reviewRating}>{review.rating}</li>
             </ul>
+            <LikeButton review={review} /> {review.Likers.length}
             {myInfo?.id === review.UserId && (
               <button type='button' onClick={() => handleOpenModal(review.id)}>
                 삭제

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { myId, review, reviewId, snackid, userReview, word } from 'types/post'
+import { likeReviewId, myId, review, reviewId, snackid, userReview, word } from 'types/post'
 
 axios.defaults.baseURL = 'http://localhost:3065'
 axios.defaults.withCredentials = true
@@ -47,5 +47,15 @@ export const removeReview = createAsyncThunk('post/removeReview', async (data: u
 
 export const loadMyReviews = createAsyncThunk('post/loadMyReviews', async (data: myId) => {
   const response = await axios.get(`/post/${data.userId}/myreview?lastId=${data.lastId || 0}`)
+  return response.data
+})
+
+export const addLike = createAsyncThunk('post/addLike', async (data: likeReviewId) => {
+  const response = await axios.patch(`/post/${data.reviewId}/like`)
+  return response.data
+})
+
+export const removeLike = createAsyncThunk('post/removeLike', async (data: likeReviewId) => {
+  const response = await axios.delete(`/post/${data.reviewId}/like`)
   return response.data
 })

@@ -132,6 +132,11 @@ router.post('/:snackId/review', async (req, res, next) => {
     const snack = await Snack.findOne({
       where: { id: req.params.snackId },
     })
+
+    if (!snack) {
+      return res.status(403).send('과자 정보가 없습니다.')
+    }
+
     const review = await Review.create({
       content: req.body.content,
       SnackId: parseInt(req.params.snackId, 10),
@@ -139,9 +144,6 @@ router.post('/:snackId/review', async (req, res, next) => {
       rating: req.body.rating,
     })
 
-    if (!snack) {
-      return res.status(403).send('과자 정보가 없습니다.')
-    }
     const snackInfo = await Snack.findAll({
       where: { id: req.params.snackId },
       attributes: ['name', 'brand', 'imagesrc'],
@@ -154,7 +156,7 @@ router.post('/:snackId/review', async (req, res, next) => {
       raw: true,
     })
 
-    const reviewObj = { ...review.dataValues, Snack: { ...snackInfo[0] }, User: { ...userInfo[0] } }
+    const reviewObj = { ...review.dataValues, Snack: { ...snackInfo[0] }, User: { ...userInfo[0] }, Likers: [] }
 
     res.status(201).json(reviewObj)
   } catch (error) {
@@ -177,6 +179,7 @@ router.get('/:snackId/review', async (req, res, next) => {
       include: [
         { model: Snack, attributes: ['name', 'brand', 'imagesrc'] },
         { model: User, attributes: ['id', 'nickname', 'profileimagesrc'] },
+        { model: User, as: 'Likers', attributes: ['id'] },
       ],
     })
     res.status(201).json(reviews)
@@ -203,6 +206,7 @@ router.get('/:userId/myreview', async (req, res, next) => {
           attributes: ['id', 'nickname'],
         },
         { model: Snack, attributes: ['name', 'brand', 'imagesrc'] },
+        { model: User, as: 'Likers', attributes: ['id'] },
       ],
     })
     console.log(req.query.lastId)
@@ -225,6 +229,38 @@ router.delete('/:reviewId', async (req, res, next) => {
   } catch (error) {
     console.error(error)
     next(error)
+  }
+})
+
+router.patch('/:reviewId/like', async (req, res, next) => {
+  try {
+    const review = await Review.findOne({
+      where: { id: req.params.reviewId },
+      attributes: { exclude: ['updatedAt'] },
+    })
+    if (!review) {
+      res.status(403).send('존재하지 않는 리뷰입니다.')
+    }
+    await review.addLikers(req.user.id)
+    console.log(review)
+    res.status(201).json({ reviewId: parseInt(req.params.reviewId, 10), userId: req.user.id })
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+router.delete('/:reviewId/like', async (req, res, next) => {
+  try {
+    const review = await Review.findOne({
+      where: { id: req.params.reviewId },
+    })
+    if (!review) {
+      res.status(403).send('존재하지 않는 리뷰입니다.')
+    }
+    await review.removeLikers(req.user.id)
+    res.status(201).json({ reviewId: parseInt(req.params.reviewId, 10), userId: req.user.id })
+  } catch (error) {
+    console.error(error)
   }
 })
 
