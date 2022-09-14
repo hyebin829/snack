@@ -12,6 +12,7 @@ import {
   loadMyReviews,
   addLike,
   removeLike,
+  loadBestReview,
 } from 'actions/post'
 import { IpostState } from 'types/post'
 
@@ -19,6 +20,7 @@ export const initialState: IpostState = {
   popularSnackList: [],
   topRatingSnackList: [],
   topReviewSnackList: [],
+  bestReviewList: [],
   searchWordList: [],
   snackInfo: null,
   rating: null,
@@ -35,6 +37,9 @@ export const initialState: IpostState = {
   loadTopReviewSnackLoading: false,
   loadTopReviewSnackDone: false,
   loadTopReviewSnackError: null,
+  loadBestReviewLoading: false,
+  loadBestReviewDone: false,
+  loadBestReviewError: null,
   loadSearchWordLoading: false,
   loadSearchWordDone: false,
   loadSearchWordError: null,
@@ -108,6 +113,20 @@ const postSlice = createSlice({
       .addCase(loadTopReviewSnack.rejected, (state, action) => {
         state.loadTopReviewSnackLoading = false
         state.loadTopReviewSnackError = action.error.message
+      })
+      .addCase(loadBestReview.pending, (state) => {
+        state.loadBestReviewLoading = true
+        state.loadBestReviewDone = false
+        state.loadBestReviewError = null
+      })
+      .addCase(loadBestReview.fulfilled, (state, action) => {
+        state.loadBestReviewLoading = false
+        state.loadBestReviewDone = true
+        state.bestReviewList = action.payload
+      })
+      .addCase(loadBestReview.rejected, (state, action) => {
+        state.loadBestReviewLoading = false
+        state.loadBestReviewError = action.error.message
       })
       .addCase(loadSearchWord.pending, (state) => {
         state.loadSearchWordLoading = true
@@ -210,11 +229,14 @@ const postSlice = createSlice({
         state.addLikeError = null
       })
       .addCase(addLike.fulfilled, (state, action) => {
-        const { reviewList, myReviewList } = state
+        const { reviewList, myReviewList, bestReviewList } = state
         const review = reviewList.find((x) => x.id === action.payload.reviewId)
         const myReview = myReviewList.find((x) => x.id === action.payload.reviewId)
+        const bestReview = bestReviewList.find((x) => x.id === action.payload.reviewId)
         review?.Likers.push({ id: action.payload.userId })
         myReview?.Likers.push({ id: action.payload.userId })
+        bestReview?.Likers.push({ id: action.payload.userId })
+
         state.addLikeLoading = false
         state.addLikeDone = true
       })
@@ -228,11 +250,13 @@ const postSlice = createSlice({
         state.removeLikeError = null
       })
       .addCase(removeLike.fulfilled, (state, action) => {
-        const { reviewList, myReviewList } = state
+        const { reviewList, myReviewList, bestReviewList } = state
         const review = reviewList.find((x) => x.id === action.payload.reviewId)
         const myReview = myReviewList.find((x) => x.id === action.payload.reviewId)
+        const bestReview = bestReviewList.find((x) => x.id === action.payload.reviewId)
         if (review) _remove(review?.Likers, { id: action.payload.userId })
         if (myReview) _remove(myReview?.Likers, { id: action.payload.userId })
+        if (bestReview) _remove(bestReview?.Likers, { id: action.payload.userId })
         state.removeLikeLoading = false
         state.removeLikeDone = true
       })

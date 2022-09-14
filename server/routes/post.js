@@ -93,6 +93,36 @@ router.get('/topreview', async (req, res, next) => {
   }
 })
 
+router.get('/:id/bestreview', async (req, res, next) => {
+  const query = `
+    WITH CNT as (
+      SELECT COUNT(*) as count, ReviewId
+      FROM snack.Like
+      GROUP BY ReviewId
+      ),
+      LIKERS as (
+        SELECT ReviewId, JSON_ARRAYAGG(JSON_OBJECT("id",UserId)) as Likers FROM snack.Like GROUP BY ReviewId
+        )
+      SELECT id,content,createdAt,updatedAt,UserId,SnackId,rating,count,Likers FROM reviews
+      LEFT JOIN CNT
+      ON CNT.ReviewId = reviews.id
+      LEFT JOIN LIKERS
+      ON LIKERS.ReviewId = reviews.id
+      WHERE CNT.ReviewId > 0 AND SnackId = ${req.params.id}
+      ORDER BY count DESC
+      LIMIT 3
+      `
+  try {
+    const bestReviewList = await sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT,
+    })
+    res.status(201).json(bestReviewList)
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+
 router.get('/loadsnackinfo/:id', async (req, res, next) => {
   try {
     const snackInfo = await Snack.findAll({
@@ -119,7 +149,6 @@ router.get('/loadsnackinfo/:id', async (req, res, next) => {
         },
       ],
     })
-    console.log(snackInfo)
     res.status(201).json(snackInfo)
   } catch (error) {
     console.error(error)
@@ -183,7 +212,6 @@ router.get('/:snackId/review', async (req, res, next) => {
       ],
     })
     res.status(201).json(reviews)
-    console.log(reviews)
   } catch (error) {
     console.error(error)
   }
@@ -209,7 +237,6 @@ router.get('/:userId/myreview', async (req, res, next) => {
         { model: User, as: 'Likers', attributes: ['id'] },
       ],
     })
-    console.log(req.query.lastId)
     res.status(201).json(reviews)
   } catch (error) {
     console.error(error)

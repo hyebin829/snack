@@ -20,6 +20,11 @@ export const loadTopReviewSnack = createAsyncThunk('post/loadTopReviewSnack', as
   return response.data
 })
 
+export const loadBestReview = createAsyncThunk('post/loadBestReview', async (data: snackid) => {
+  const response = await axios.get(`/post/${data.id}/bestreview`)
+  return response.data
+})
+
 export const loadSearchWord = createAsyncThunk('post/loadSearchWord', async (data: word) => {
   const response = await axios.get(`/post/searchresult?word=${data.word}`)
   return response.data
