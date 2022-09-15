@@ -9,13 +9,13 @@ type snackid = {
 
 const BestReview = ({ snackId }: snackid) => {
   const dispatch = useAppDispatch()
-  const { bestReviewList, addLikeLoading, removeLikeLoading } = useAppSelector(
+  const { bestReviewList, addLikeLoading, removeLikeLoading, removeReviewLoading } = useAppSelector(
     (state) => state.post
   )
 
   useEffect(() => {
     dispatch(loadBestReview({ id: snackId }))
-  }, [dispatch, snackId, addLikeLoading, removeLikeLoading])
+  }, [dispatch, snackId, addLikeLoading, removeLikeLoading, removeReviewLoading])
 
   return (
     <div>
