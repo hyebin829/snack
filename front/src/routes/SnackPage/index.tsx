@@ -1,12 +1,12 @@
 import { loadSnackInfo } from 'actions/post'
 import FavoriteButton from 'components/FavoriteButton'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import ReviewListPage from 'routes/ReviewListPage'
 import styles from './snack.module.scss'
 import { AiFillStar } from 'react-icons/ai'
-import { openReviewModal } from 'reducers/modal'
+import { openConfirmModal, openLoginModal, openReviewModal } from 'reducers/modal'
 import BestReview from 'components/BestReview'
 
 const SnackPage = () => {
@@ -28,9 +28,18 @@ const SnackPage = () => {
     )
   }
 
-  const handleOpenReviewModal = () => {
-    dispatch(openReviewModal())
+  const handleOpenModal = (reviewId: number) => {
+    dispatch(openConfirmModal(reviewId))
   }
+
+  const handleOpenReviewModal = () => {
+    if (!myInfo?.id) {
+      dispatch(openLoginModal())
+    } else {
+      dispatch(openReviewModal())
+    }
+  }
+  const myReview = snackInfo?.Reviews.filter((review) => review.UserId === myInfo?.id)
 
   return (
     <div>
@@ -46,12 +55,23 @@ const SnackPage = () => {
           평균 <AiFillStar size={14} /> {isNaN(ratingAverage) ? 0 : ratingAverage}점
         </li>
       </ul>
-      {myInfo ? (
+      {myReview?.length ? (
+        <div>
+          <ul>
+            {myReview.map((review) => (
+              <Fragment key={`myreview-${review.id}`}>
+                <li>{review.content}</li>
+                <button type='button' onClick={() => handleOpenModal(review.id)}>
+                  삭제
+                </button>
+              </Fragment>
+            ))}
+          </ul>
+        </div>
+      ) : (
         <button type='button' onClick={handleOpenReviewModal}>
           리뷰 작성하기
         </button>
-      ) : (
-        <div>리뷰 작성을 위해 로그인이 필요합니다.</div>
       )}
       <BestReview snackId={snackId} />
       -----
