@@ -1,8 +1,8 @@
 import { addReview } from 'actions/post'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react'
 import { AiFillStar } from 'react-icons/ai'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { closeReviewModal } from 'reducers/modal'
 import styles from './reviewForm.module.scss'
 import { IoMdClose } from 'react-icons/io'
@@ -16,16 +16,6 @@ const ReviewFormModal = () => {
   const { snackInfo } = useAppSelector((state) => state.post)
   const [rating, setRating] = useState(0)
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   if (myInfo?.Reviews.length) {
-  //     navigate(`/snack/${snackId}`)
-  //   }
-  // }, [myInfo?.Reviews, navigate, snackId])
-
-  if (!myInfo) return <div>로그인이 필요합니다.</div>
-  console.log(myInfo)
 
   const handleGetValue = (e: MouseEvent<HTMLInputElement>) => {
     setRating(Number(e.currentTarget.value))
