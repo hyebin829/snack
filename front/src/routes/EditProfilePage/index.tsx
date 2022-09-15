@@ -16,7 +16,6 @@ const EditProfilePage = () => {
     profileImagePath,
     changeNicknameError,
     changeNicknameLoading,
-    uploadImageDone,
     uploadImageError,
     editProfileImageDone,
   } = useAppSelector((state) => state.user)
@@ -27,7 +26,11 @@ const EditProfilePage = () => {
 
   useEffect(() => {
     dispatch(loadMyInfo)
-  }, [changeNicknameLoading, editProfileImageDone, dispatch])
+    if (!myInfo) navigate('/')
+  }, [changeNicknameLoading, editProfileImageDone, dispatch, myInfo, navigate])
+
+  if (loadMyInfoDone && !myInfo)
+    return <div className={styles.needLoginMessage}>로그인이 필요합니다.</div>
 
   const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value)
@@ -63,9 +66,6 @@ const EditProfilePage = () => {
       navigate('/profile')
     }
   }
-
-  if (loadMyInfoDone && !myInfo)
-    return <div className={styles.needLoginMessage}>로그인이 필요합니다.</div>
 
   return (
     <div>
