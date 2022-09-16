@@ -102,12 +102,15 @@ router.get('/:id/bestreview', async (req, res, next) => {
       ),
       LIKERS as (
         SELECT ReviewId, JSON_ARRAYAGG(JSON_OBJECT("id",UserId)) as Likers FROM snack.Like GROUP BY ReviewId
-        )
-      SELECT id,content,createdAt,updatedAt,UserId,SnackId,rating,count,Likers FROM reviews
+        ),
+        USERS as (SELECT id,nickname,profileimagesrc FROM users)
+      SELECT reviews.id,content,createdAt,updatedAt,UserId,SnackId,rating,count,Likers,nickname,profileimagesrc FROM reviews
       LEFT JOIN CNT
       ON CNT.ReviewId = reviews.id
       LEFT JOIN LIKERS
       ON LIKERS.ReviewId = reviews.id
+      LEFT JOIN USERS
+      ON USERS.id = reviews.UserId
       WHERE CNT.ReviewId > 0 AND SnackId = ${req.params.id}
       ORDER BY count DESC
       LIMIT 3
