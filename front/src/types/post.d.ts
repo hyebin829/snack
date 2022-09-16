@@ -84,6 +84,8 @@ interface IbestReview {
   SnackId: number
   rating: number
   count: number
+  nickname: string
+  profileimagesrc: null | string
   Likers: { id: number }[]
 }
 
