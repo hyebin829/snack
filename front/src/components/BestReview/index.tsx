@@ -1,7 +1,11 @@
-import { loadBestReview } from 'actions/post'
-import LikeButton from 'components/LikeButton'
+import { useEffect } from 'react'
+import dayjs from 'dayjs'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { useEffect, Fragment } from 'react'
+import { loadBestReview } from 'actions/post'
+import styles from './bestReview.module.scss'
+import LikeButton from 'components/LikeButton'
+import { IoPersonCircle } from 'react-icons/io5'
+import { AiFillStar } from 'react-icons/ai'
 
 type snackid = {
   snackId: string | undefined
@@ -19,13 +23,36 @@ const BestReview = ({ snackId }: snackid) => {
 
   return (
     <div>
-      <ul>
+      <ul className={styles.bestReviewList}>
         {bestReviewList.map((review) => (
-          <Fragment key={review.id}>
-            <li>{review.content}</li>
-            <li>{review.Likers.length}</li>
-            <LikeButton review={review} />
-          </Fragment>
+          <li key={review.id}>
+            <ul className={styles.bestReview}>
+              <li className={styles.profile}>
+                <span className={styles.best}>BEST</span>
+                {review.profileimagesrc ? (
+                  <img
+                    src={`http://localhost:3065/profileimage/${review.profileimagesrc}`}
+                    alt='profile'
+                  />
+                ) : (
+                  <IoPersonCircle size={32} />
+                )}
+                <span>{review.nickname}</span>
+                <span className={styles.rating}>
+                  <AiFillStar size={14} color='#ffa500' />
+                  {review.rating}
+                </span>
+              </li>
+              <li className={styles.content}>{review.content}</li>
+              <li className={styles.date}>{dayjs(review.createdAt).format('YYYY-MM-DD')}</li>
+              <li className={styles.likers}>
+                <span>
+                  <LikeButton review={review} />
+                </span>
+                {review.Likers.length}
+              </li>
+            </ul>
+          </li>
         ))}
       </ul>
     </div>
