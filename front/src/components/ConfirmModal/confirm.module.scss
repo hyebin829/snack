@@ -1,14 +1,49 @@
-.confirmWrapper {
+@use '/src/styles/constants/colors';
+
+.modalBackground {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
-  width: 200px;
-  height: 200px;
-  background-color: green;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 56%);
 
-  button {
-    width: 40px;
-    height: 20px;
+  .confirmWrapper {
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 260px;
+    height: 160px;
+    background-color: colors.$WHITE;
+    border-radius: 7px;
+
+    .notice {
+      font-size: 16px;
+      font-weight: 600;
+      color: colors.$RED2;
+    }
+
+    .buttonWrapper {
+      display: flex;
+
+      button {
+        width: 100px;
+        height: 20px;
+        font-size: 16px;
+      }
+
+      button:first-child {
+        color: colors.$RED;
+      }
+    }
   }
 }
