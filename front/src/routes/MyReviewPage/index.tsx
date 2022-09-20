@@ -1,10 +1,12 @@
-import { loadMyReviews, removeReview } from 'actions/post'
+import { loadMyReviews } from 'actions/post'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect, useRef } from 'react'
 import styles from './myreview.module.scss'
 
-import { FaCookieBite } from 'react-icons/fa'
 import LikeButton from 'components/LikeButton'
+import { openConfirmModal } from 'reducers/modal'
+import { RiDeleteBin6Line } from 'react-icons/ri'
+import dayjs from 'dayjs'
 
 const MyReviewPage = () => {
   const { myInfo } = useAppSelector((state) => state.user)
@@ -12,8 +14,8 @@ const MyReviewPage = () => {
     (state) => state.post
   )
 
-  const deleteReview = (reviewId: number) => {
-    dispatch(removeReview({ reviewId, userId: myInfo?.id }))
+  const handleOpenModal = (reviewId: number) => {
+    dispatch(openConfirmModal(reviewId))
   }
 
   const dispatch = useAppDispatch()
@@ -54,18 +56,26 @@ const MyReviewPage = () => {
                   alt={review.Snack.imagesrc}
                 />
               </li>
-              <li>
-                <span className={styles.snackName}>
-                  <FaCookieBite color='#d2b48c	' />
-                  {review.Snack.name}
-                </span>
-                {review.content}
+              <li className={styles.snackNameDate}>
+                {review.Snack.name}
+                <span>{dayjs(review.createdAt).format('YYYY-MM-DD')}</span>
               </li>
+              <li className={styles.reviewContent}>{review.content}</li>
+              <li className={styles.likers}>
+                <LikeButton review={review} />
+                {review.Likers.length}
+              </li>
+              <button
+                type='button'
+                onClick={() => handleOpenModal(review.id)}
+                className={styles.deleteButton}
+              >
+                <span>
+                  <RiDeleteBin6Line size={15} color='#a8a8a8' />
+                </span>
+                삭제
+              </button>
             </ul>
-            <LikeButton review={review} />
-            <button type='button' onClick={() => deleteReview(review.id)}>
-              삭제
-            </button>
           </li>
         ))}
       </ul>
