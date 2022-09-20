@@ -2,7 +2,6 @@ import Layout from 'components/Layout'
 import { Routes, Route } from 'react-router-dom'
 import Home from './Home'
 import ProfilePage from './ProfilePage'
-import ReviewWritePage from './ReviewWritePage'
 import SearchPage from './SearchPage'
 import SnackPage from './SnackPage'
 import 'slick-carousel/slick/slick.css'
@@ -23,7 +22,6 @@ const App = () => {
           <Route path='/myreview' element={<MyReviewPage />} />
           <Route path='/search' element={<SearchPage />} />
           <Route path='/snack/:id' element={<SnackPage />} />
-          <Route path='/snack/:id/review' element={<ReviewWritePage />} />
         </Route>
       </Routes>
     </div>
