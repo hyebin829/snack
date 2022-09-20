@@ -16,7 +16,7 @@ try {
 
 const filesizeErrorHandler = (error, req, res, next) => {
   if (error) {
-    res.status(400).send('20mb 이하의 이미지만 가능합니다.')
+    res.status(400).send('20mb 이하의 이미지만 가능합니다. 사진을 다시 선택해주세요.')
     return
   } else {
     next()
