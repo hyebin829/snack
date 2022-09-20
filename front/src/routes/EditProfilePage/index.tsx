@@ -97,16 +97,24 @@ const EditProfilePage = () => {
             name='profileimage'
           />
 
-          {uploadImageError && <div>{uploadImageError}</div>}
-
-          <input type='text' defaultValue={myInfo?.nickname} onChange={onChangeNickname} />
-          <button type='submit' disabled={checkBlank || nicknameValueLengthError}>
-            저장
-          </button>
+          {uploadImageError && <div className={styles.uploadError}>{uploadImageError}</div>}
+          <div className={styles.nicknameForm}>
+            <input
+              type='text'
+              defaultValue={myInfo?.nickname}
+              onChange={onChangeNickname}
+              className={styles.nicknameInput}
+            />
+            <button type='submit' disabled={checkBlank || nicknameValueLengthError}>
+              저장
+            </button>
+          </div>
         </form>
-        {changeNicknameError && <div>이미 사용중인 닉네임입니다.</div>}
-        {nicknameValueLengthError && <div>3글자 이상 10글자 이하로 작성해주세요.</div>}
-        {checkBlank && <div>공백문자는 입력 불가능합니다.</div>}
+        <div className={styles.message}>
+          {changeNicknameError && <div>이미 사용중인 닉네임입니다.</div>}
+          {nicknameValueLengthError && <div>3글자 이상 10글자 이하로 작성해주세요.</div>}
+          {checkBlank && <div>공백문자는 입력 불가능합니다.</div>}
+        </div>
       </div>
     </div>
   )

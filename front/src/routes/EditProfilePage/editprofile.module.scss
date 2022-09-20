@@ -1,6 +1,84 @@
+@use '/src/styles/constants/colors';
+
 .needLoginMessage {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100px;
+}
+
+.profileimageFormWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+
+  img {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+  }
+
+  .editProfileForm {
+    button {
+      padding: 7px 11px;
+      margin-bottom: 10px;
+      color: colors.$WHITE;
+      background-color: colors.$RED2;
+      border-radius: 5px;
+
+      &:disabled {
+        padding: 7px 11px;
+        color: colors.$WHITE;
+        background-color: colors.$GRAY3;
+        border-radius: 5px;
+      }
+    }
+
+    input[type='file'] {
+      display: none;
+    }
+
+    label {
+      position: absolute;
+      top: 90px;
+      right: 120px;
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      padding: 8px;
+      text-align: center;
+      background-color: colors.$WHITE;
+      border-radius: 50%;
+      box-shadow: rgba(0, 0, 0, 24%) 0 3px 8px;
+    }
+  }
+
+  .message {
+    div {
+      color: colors.$RED2;
+    }
+  }
+
+  .uploadError {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: colors.$RED2;
+  }
+}
+
+.nicknameForm {
+  display: flex;
+  justify-content: center;
+
+  input[type='text'] {
+    width: 180px;
+    height: 30px;
+    padding: 0 7px;
+    margin-right: 5px;
+    border: none;
+    border-bottom: 1px solid colors.$GRAY6;
+  }
 }
