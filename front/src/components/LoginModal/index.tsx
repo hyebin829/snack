@@ -23,10 +23,11 @@ const LoginModal = () => {
     <Portal>
       <div className={styles.modalBackground} ref={modalRef} onClick={clickdiv}>
         <div className={styles.modalWrapper}>
-          <h2>SNACK</h2>
+          <h2>SNACKPEDIA</h2>
+          <div className={styles.needLogin}>로그인 후 서비스를 이용해주세요.</div>
           <div className={styles.loginTitle}>
             카카오 로그인으로 <br />
-            간편하게 로그인이 가능합니다.
+            간편하게 회원가입 및 로그인이 가능합니다.
           </div>
           <button type='button' onClick={handleCloseModal}>
             <IoMdClose size={20} />
