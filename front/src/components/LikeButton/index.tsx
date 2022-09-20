@@ -1,6 +1,7 @@
 import { addLike, removeLike } from 'actions/post'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { RiThumbUpLine, RiThumbUpFill } from 'react-icons/ri'
+import { openLoginModal } from 'reducers/modal'
 import { IbestReview, Ireview } from 'types/post'
 
 type review = {
@@ -12,9 +13,13 @@ const LikeButton = ({ review }: review) => {
   const { myInfo } = useAppSelector((state) => state.user)
 
   const toggleReviewLike = () => {
-    liked
-      ? dispatch(removeLike({ reviewId: review.id }))
-      : dispatch(addLike({ reviewId: review.id }))
+    if (!myInfo?.id) {
+      dispatch(openLoginModal())
+    } else {
+      liked
+        ? dispatch(removeLike({ reviewId: review.id }))
+        : dispatch(addLike({ reviewId: review.id }))
+    }
   }
 
   const liked = review.Likers.find((liker) => liker.id === myInfo?.id)
