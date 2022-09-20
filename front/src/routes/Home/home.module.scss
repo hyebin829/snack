@@ -46,7 +46,11 @@
       li:nth-child(3) {
         font-size: 14px;
         font-weight: 300;
-        color: colors.$G;
+        color: colors.$GRAY2;
+      }
+
+      li:last-child {
+        font-size: 14px;
       }
 
       .heartCount {
@@ -58,7 +62,7 @@
   }
 
   img {
-    width: 120px;
+    width: 110px;
     padding: 5px 5px 20px;
   }
 

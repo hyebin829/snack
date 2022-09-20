@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <div className={styles.homeWrapper}>
       <h2>인기 과자</h2>
-      <Swiper slidesPerView={3} navigation modules={[Navigation]}>
+      <Swiper slidesPerView={3.2} navigation modules={[Navigation]}>
         {popularSnackList.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={`/snack/${item.id}`} key={item.id}>
@@ -48,7 +48,7 @@ const Home = () => {
         ))}
       </Swiper>
       <h2>별점이 높은 과자</h2>
-      <Swiper slidesPerView={3} navigation modules={[Navigation]}>
+      <Swiper slidesPerView={3.2} navigation modules={[Navigation]}>
         {topRatingSnackList.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={`/snack/${item.id}`} key={item.id}>
@@ -66,7 +66,7 @@ const Home = () => {
         ))}
       </Swiper>
       <h2>리뷰가 많은 과자</h2>
-      <Swiper slidesPerView={3} navigation modules={[Navigation]}>
+      <Swiper slidesPerView={3.2} navigation modules={[Navigation]}>
         {topReviewSnackList.map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={`/snack/${item.id}`} key={item.id}>
