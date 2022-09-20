@@ -141,7 +141,7 @@ router.get('/loadsnackinfo/:id', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'profileimagesrc'],
             },
           ],
         },
