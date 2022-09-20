@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './profile.module.scss'
 import { IoPersonCircle } from 'react-icons/io5'
+import { AiFillEdit } from 'react-icons/ai'
 
 const ProfilePage = () => {
   const { myInfo } = useAppSelector((state) => state.user)
@@ -13,19 +14,21 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <div>
-        <div>{myInfo?.nickname}</div>
+      <div className={styles.profileWrapper}>
         {myInfo.profileimagesrc ? (
           <img
             src={`http://localhost:3065/profileimage/${myInfo.profileimagesrc}`}
             alt='my profile'
           />
         ) : (
-          <IoPersonCircle />
+          <IoPersonCircle size={130} />
         )}
-        <Link to='/editprofile'>수정</Link>
+        <div className={styles.nickname}>{myInfo?.nickname}</div>
+        <Link to='/editprofile'>
+          프로필 수정 <AiFillEdit />
+        </Link>
       </div>
-      <div>
+      <div className={styles.menuWrapper}>
         <ul>
           <li>
             <Link to='/myfavorite'>좋아요 누른 과자</Link>
