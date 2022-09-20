@@ -4,12 +4,12 @@
   h2 {
     margin: 80px 5px 10px;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .favoriteButton {
     position: absolute;
-    top: 10px;
+    top: 0;
     right: -10px;
     z-index: 10;
   }
@@ -26,11 +26,16 @@
       border: 1px solid colors.$BACKGROUND;
       border-radius: 5px;
 
+      a {
+        color: colors.$FONT;
+      }
+
       img {
         width: 130px;
       }
 
       .snackName {
+        margin-bottom: 2px;
         font-size: 16px;
         font-weight: 500;
       }
