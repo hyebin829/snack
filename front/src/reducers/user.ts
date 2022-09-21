@@ -9,6 +9,7 @@ import {
   removeFavorite,
   uploadImage,
   editProfileimage,
+  signup,
 } from 'actions/user'
 import { IuserState } from 'types/user'
 
@@ -24,6 +25,9 @@ export const initialState: IuserState = {
   logoutLoading: false,
   logoutDone: false,
   logoutError: null,
+  signupLoading: false,
+  signupDone: false,
+  signupError: null,
   addFavoriteLoading: false,
   addFavoriteDone: false,
   addFavoriteError: null,
@@ -53,13 +57,16 @@ const userSlice = createSlice({
         state.loginDone = false
         state.loginError = null
       })
-      .addCase(login.fulfilled, (state) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.loginLoading = false
         state.loginDone = true
+        state.myInfo = action.payload
+        state.loginError = null
+        state.signupError = null
       })
       .addCase(login.rejected, (state, action) => {
         state.loginLoading = false
-        state.loginError = action.error.message
+        state.loginError = `${action.payload}`
       })
       .addCase(loadMyInfo.pending, (state) => {
         state.loadMyInfoLoading = true
@@ -91,6 +98,21 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.logoutLoading = false
         state.logoutError = action.error.message
+      })
+      .addCase(signup.pending, (state) => {
+        state.signupLoading = true
+        state.signupDone = false
+        state.signupError = null
+      })
+      .addCase(signup.fulfilled, (state) => {
+        state.signupLoading = false
+        state.signupDone = true
+        state.loginError = null
+        state.signupError = null
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.signupLoading = false
+        state.signupError = `${action.payload}`
       })
       .addCase(addFavorite.pending, (state) => {
         state.addFavoriteLoading = true
