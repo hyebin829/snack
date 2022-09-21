@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { snackid } from 'types/post'
-import { profileImagesrc, userNickname } from 'types/user'
+import { loginInfo, profileImagesrc, signupInfo, userNickname } from 'types/user'
 
 axios.defaults.baseURL = 'http://localhost:3065'
 axios.defaults.withCredentials = true
@@ -11,10 +11,29 @@ export const loadMyInfo = createAsyncThunk('user/loadMyInfo', async () => {
   return response.data
 })
 
-export const login = createAsyncThunk('user/login', async () => {
-  const response = await axios.get('/user/kakao/login')
-  return response.data
-})
+export const signup = createAsyncThunk(
+  'user/signup',
+  async (data: signupInfo, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/user', data)
+      return response.data
+    } catch (error: any) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const login = createAsyncThunk(
+  'user/login',
+  async (data: loginInfo, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/user/login', data)
+      return response.data
+    } catch (error: any) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
 
 export const logout = createAsyncThunk('user/logout', async () => {
   const response = await axios.post('/user/logout')
