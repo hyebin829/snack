@@ -10,6 +10,9 @@ export interface IuserState {
   logoutLoading: boolean
   logoutDone: boolean
   logoutError: null | string | undefined
+  signupLoading: boolean
+  signupDone: boolean
+  signupError: null | string | undefined
   addFavoriteLoading: boolean
   addFavoriteDone: boolean
   addFavoriteError: null | string | undefined
@@ -76,4 +79,15 @@ export type userNickname = {
 
 export type profileImagesrc = {
   imagesrc: string[] | null
+}
+
+export type loginInfo = {
+  email: string
+  password: string
+}
+
+export type signupInfo = {
+  email: string
+  password: string
+  nickname: string
 }
