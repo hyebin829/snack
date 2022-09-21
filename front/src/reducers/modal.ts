@@ -5,6 +5,7 @@ export const initialState: ImodalState = {
   isLoginModalOpen: false,
   isConfirmModalOpen: false,
   isReviewModalOpen: false,
+  isSignUpModalOpen: false,
   reviewId: undefined,
 }
 
@@ -32,6 +33,12 @@ const modalSlice = createSlice({
     closeReviewModal: (state) => {
       state.isReviewModalOpen = false
     },
+    openSignUpModal: (state) => {
+      state.isSignUpModalOpen = true
+    },
+    closeSignUpModal: (state) => {
+      state.isSignUpModalOpen = false
+    },
   },
 })
 
@@ -42,6 +49,8 @@ export const {
   closeConfirmModal,
   openReviewModal,
   closeReviewModal,
+  openSignUpModal,
+  closeSignUpModal,
 } = modalSlice.actions
 
 export default modalSlice
