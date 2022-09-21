@@ -1,4 +1,5 @@
 const passport = require('passport')
+const local = require('./local')
 const kakao = require('./kakao')
 const { User } = require('../models')
 
@@ -7,8 +8,8 @@ module.exports = () => {
   passport.serializeUser((user, done) => {
     done(null, {
       id: user.id,
-      accessToken: user.accessToken,
-      refreshToken: user.refreshToken,
+      accessToken: user.accessToken ? user.accessToken : '',
+      refreshToken: user.refreshToken ? user.refreshToken : '',
     })
   })
   passport.deserializeUser(async (data, done) => {
@@ -18,8 +19,8 @@ module.exports = () => {
       })
       const userWithToken = {
         id: user.id,
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
+        accessToken: data.accessToken ? data.accessToken : '',
+        refreshToken: data.refreshToken ? data.refreshToken : '',
       }
       done(null, userWithToken)
     } catch (error) {
@@ -28,5 +29,6 @@ module.exports = () => {
     }
   })
 
+  local()
   kakao()
 }
