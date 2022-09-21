@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const bcrypt = require('bcrypt')
 const axios = require('axios')
 const multer = require('multer')
 const fs = require('fs')
@@ -87,6 +88,74 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.post('/', async (req, res, next) => {
+  try {
+    const exUser = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    })
+    if (exUser) {
+      return res.status(403).send('이미 사용중인 아이디입니다.')
+    }
+    const exNickname = await User.findOne({
+      where: {
+        nickname: req.body.nickname,
+      },
+    })
+    if (exNickname) {
+      return res.status(403).send('이미 사용중인 닉네임입니다.')
+    }
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    await User.create({
+      email: req.body.email,
+      password: hashedPassword,
+      nickname: req.body.nickname,
+    })
+    res.status(201).send('ok')
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error(err)
+      return next(err)
+    }
+
+    if (info) {
+      return res.status(401).send(info.reason)
+    }
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        return next(loginErr)
+      }
+
+      const userInfoWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ['password', 'createdAt', 'updatedAt'],
+        },
+        include: [
+          {
+            model: Review,
+            attributes: ['id', 'UserId'],
+          },
+          {
+            model: Snack,
+            as: 'Favorited',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+          },
+        ],
+      })
+      return res.status(200).json(userInfoWithoutPassword)
+    })
+  })(req, res, next)
+})
+
 router.get('/kakao/login', passport.authenticate('kakao'))
 
 router.get(
@@ -99,15 +168,17 @@ router.get(
 )
 
 router.post('/logout', async (req, res) => {
-  try {
-    const LOGOUT_REDIRECT_URI = 'http://localhost:3065/user/kakao/logout'
-    const REST_API_KEY = process.env.KAKAO_KEY
-    const logout = await axios({
-      method: 'GET',
-      url: `https://kauth.kakao.com/oauth/logout?client_id=${REST_API_KEY}&logout_redirect_uri=${LOGOUT_REDIRECT_URI}`,
-    })
-  } catch (error) {
-    console.error(error)
+  if (req.user.accessToken && req.user.refreshToken) {
+    try {
+      const LOGOUT_REDIRECT_URI = 'http://localhost:3065/user/kakao/logout'
+      const REST_API_KEY = process.env.KAKAO_KEY
+      const logout = await axios({
+        method: 'GET',
+        url: `https://kauth.kakao.com/oauth/logout?client_id=${REST_API_KEY}&logout_redirect_uri=${LOGOUT_REDIRECT_URI}`,
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   req.logout()
