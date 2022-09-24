@@ -224,12 +224,12 @@ router.get('/:userId/myreview', async (req, res, next) => {
   const where = { UserId: parseInt(req.params.userId, 10) }
   console.log(req.query.lastId)
   try {
-    if (parseInt(req.query.lastId, 10)) {
-      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
-    }
+    // if (parseInt(req.query.lastId, 10)) {
+    //   where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
+    // }
     const reviews = await Review.findAll({
       where,
-      limit: 10,
+      // limit: 10,
       order: [['createdAt', 'DESC']],
       include: [
         {

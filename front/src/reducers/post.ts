@@ -15,6 +15,7 @@ import {
   loadBestReview,
 } from 'actions/post'
 import { IpostState } from 'types/post'
+import { logout } from 'actions/user'
 
 export const initialState: IpostState = {
   popularSnackList: [],
@@ -216,8 +217,7 @@ const postSlice = createSlice({
       .addCase(loadMyReviews.fulfilled, (state, action) => {
         state.loadMyReviewsLoading = false
         state.loadMyReviewsDone = true
-        state.myReviewList = state.myReviewList.concat(action.payload)
-        state.hasMoreMyReview = action.payload.length === 10
+        state.myReviewList = action.payload
       })
       .addCase(loadMyReviews.rejected, (state, action) => {
         state.loadMyReviewsLoading = false
@@ -263,6 +263,9 @@ const postSlice = createSlice({
       .addCase(removeLike.rejected, (state, action) => {
         state.removeLikeLoading = false
         state.removeLikeError = action.error.message
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.myReviewList = []
       })
       .addDefaultCase((state) => state),
 })

@@ -10,37 +10,19 @@ import dayjs from 'dayjs'
 
 const MyReviewPage = () => {
   const { myInfo } = useAppSelector((state) => state.user)
-  const { myReviewList, hasMoreMyReview, loadMyReviewsLoading } = useAppSelector(
-    (state) => state.post
-  )
+  const { myReviewList } = useAppSelector((state) => state.post)
+  const dispatch = useAppDispatch()
+  const target = useRef(null)
+
+  useEffect(() => {
+    dispatch(loadMyReviews({ userId: myInfo?.id }))
+  }, [dispatch, myInfo?.id])
 
   const handleOpenModal = (reviewId: number) => {
     dispatch(openConfirmModal(reviewId))
   }
 
-  const dispatch = useAppDispatch()
-  const target = useRef(null)
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0,
-    }
-    const intersectionHandler = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        const lastId = myReviewList[myReviewList.length - 1]?.id
-        if (entry.isIntersecting && hasMoreMyReview && !loadMyReviewsLoading && myInfo) {
-          dispatch(loadMyReviews({ lastId, userId: myInfo?.id }))
-        }
-      })
-    }
-    const observer = new IntersectionObserver(intersectionHandler, options)
-    if (target.current) {
-      observer.observe(target.current)
-    }
-    return () => observer && observer.disconnect()
-  }, [dispatch, hasMoreMyReview, loadMyReviewsLoading, myInfo, myReviewList])
+  if (!myInfo) return <div className={styles.needLogin}>로그인이 필요합니다.</div>
 
   return (
     <div className={styles.reviewPage}>

@@ -169,6 +169,6 @@ export type userReview = {
 }
 
 export type myId = {
-  lastId: number | undefined
+  // lastId: number | undefined
   userId: number | undefined
 }

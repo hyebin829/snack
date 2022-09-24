@@ -51,7 +51,7 @@ export const removeReview = createAsyncThunk('post/removeReview', async (data: u
 })
 
 export const loadMyReviews = createAsyncThunk('post/loadMyReviews', async (data: myId) => {
-  const response = await axios.get(`/post/${data.userId}/myreview?lastId=${data.lastId || 0}`)
+  const response = await axios.get(`/post/${data.userId}/myreview`)
   return response.data
 })
 
