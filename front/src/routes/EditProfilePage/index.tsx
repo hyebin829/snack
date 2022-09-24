@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { changeNickname, loadMyInfo, editProfileimage, uploadImage } from 'actions/user'
-import { IoPersonCircle, IoCamera } from 'react-icons/io5'
+import { IoCamera } from 'react-icons/io5'
 import styles from './editprofile.module.scss'
 
 const EditProfilePage = () => {
@@ -73,12 +73,10 @@ const EditProfilePage = () => {
         {profileImagePath.length ? (
           <img src={`http://localhost:3065/profileimage/${profileImagePath}`} alt='my profile' />
         ) : (
-          (
-            <img
-              src={`http://localhost:3065/profileimage/${myInfo?.profileimagesrc}`}
-              alt='my profile'
-            />
-          ) || <IoPersonCircle size={150} />
+          <img
+            src={`http://localhost:3065/profileimage/${myInfo?.profileimagesrc}`}
+            alt='my profile'
+          />
         )}
         <form
           encType='multipart/form-data'
@@ -86,7 +84,7 @@ const EditProfilePage = () => {
           onSubmit={onSubmitProfile}
         >
           <label htmlFor='file'>
-            <IoCamera size={22} />
+            <IoCamera size={20} />
           </label>
           <input
             type='file'

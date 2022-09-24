@@ -111,6 +111,7 @@ router.post('/', async (req, res, next) => {
       email: req.body.email,
       password: hashedPassword,
       nickname: req.body.nickname,
+      profileimagesrc: 'snackpedia-profileimage-default.png',
     })
     res.status(201).send('ok')
   } catch (error) {
