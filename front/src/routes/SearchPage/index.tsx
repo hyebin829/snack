@@ -32,12 +32,17 @@ const SearchPage = () => {
           type='text'
           value={value}
           onChange={handleSearch}
-          placeholder='과자를 검색해보세요'
+          placeholder='과자 이름을 검색해보세요'
         />
         <button type='submit'>
           <BiSearch size={20} />
         </button>
       </form>
+      {debouncedValue && !searchWordList.length && (
+        <div className={styles.noResult}>
+          &apos;{debouncedValue}&apos;의 검색 결과가 존재하지 않습니다.
+        </div>
+      )}
       <ul>
         {searchWordList.map((item) => (
           <Link to={`/snack/${item.id}`} key={item.id} className={styles.resultItemWrapper}>
