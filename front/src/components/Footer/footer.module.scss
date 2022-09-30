@@ -1,0 +1,35 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
+
+.footer {
+  display: none;
+
+  @include responsive.after(MD) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 50px;
+    background-color: colors.$FONT2;
+
+    .logo {
+      padding-left: 50px;
+      font-size: 18px;
+      color: colors.$GRAY6;
+    }
+
+    .addressWrapper {
+      padding-right: 50px;
+
+      .contact {
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: colors.$GRAY2;
+      }
+
+      address {
+        color: colors.$GRAY2;
+      }
+    }
+  }
+}
