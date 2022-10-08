@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import cx from 'classnames'
 import styles from './GNB.module.scss'
-
 import { HiHome, HiUser, HiSearch } from 'react-icons/hi'
 
 const GNB = () => {
