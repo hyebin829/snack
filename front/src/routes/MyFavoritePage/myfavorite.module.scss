@@ -1,10 +1,25 @@
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
 
 .myfavoriteWrapper {
+  @include responsive.after(LD) {
+    width: 1200px;
+    margin: 0 auto;
+  }
+
   h2 {
-    margin: 80px 5px 10px;
+    margin: 20px 5px;
     font-size: 20px;
     font-weight: 600;
+  }
+
+  .emptyList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    line-height: 20px;
+    text-align: center;
   }
 
   .favoriteButton {
@@ -19,6 +34,16 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 15px;
     justify-items: center;
+
+    @include responsive.after(ML) {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @include responsive.after(LD) {
+      grid-template-columns: 25% 25% 25%;
+      justify-content: center;
+    }
 
     .snackWrapper {
       position: relative;
@@ -35,14 +60,18 @@
       }
 
       .snackName {
+        width: 130px;
         margin-bottom: 2px;
+        overflow: hidden;
         font-size: 16px;
         font-weight: 500;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .snackBrand {
         font-size: 14px;
-        color: colors.$G;
+        color: colors.$GRAY2;
       }
     }
   }
