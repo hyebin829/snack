@@ -224,12 +224,8 @@ router.get('/:userId/myreview', async (req, res, next) => {
   const where = { UserId: parseInt(req.params.userId, 10) }
   console.log(req.query.lastId)
   try {
-    // if (parseInt(req.query.lastId, 10)) {
-    //   where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
-    // }
     const reviews = await Review.findAll({
       where,
-      // limit: 10,
       order: [['createdAt', 'DESC']],
       include: [
         {
@@ -272,7 +268,6 @@ router.patch('/:reviewId/like', async (req, res, next) => {
       res.status(403).send('존재하지 않는 리뷰입니다.')
     }
     await review.addLikers(req.user.id)
-    console.log(review)
     res.status(201).json({ reviewId: parseInt(req.params.reviewId, 10), userId: req.user.id })
   } catch (error) {
     console.error(error)
