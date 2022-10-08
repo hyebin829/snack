@@ -1,26 +1,36 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { MouseEvent, useRef, useState, ChangeEvent, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
+import { login } from 'actions/user'
+import { closeLoginModal, openSignUpModal } from 'reducers/modal'
 import Portal from 'Portal'
 import styles from './loginmodal.module.scss'
 import { IoMdClose } from 'react-icons/io'
-import { MouseEvent, useRef, useState, ChangeEvent } from 'react'
-import { closeLoginModal, openSignUpModal } from 'reducers/modal'
-import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-import { login } from 'actions/user'
 
 const LoginModal = () => {
-  const dispatch = useAppDispatch()
-  const { loginError } = useAppSelector((state) => state.user)
+  const { loginError, myInfo } = useAppSelector((state) => state.user)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(false)
-
   const modalRef = useRef<HTMLDivElement>(null)
-  const clickdiv = (e: MouseEvent<HTMLDivElement>) => {
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const onClickBackground = (e: MouseEvent<HTMLDivElement>) => {
     if (modalRef.current === e.target) {
       dispatch(closeLoginModal())
     }
   }
+
+  useEffect(() => {
+    if (myInfo) {
+      dispatch(closeLoginModal())
+      navigate('/')
+    }
+  }, [myInfo, dispatch, navigate])
 
   const handleOpenSignUpModal = () => {
     dispatch(closeLoginModal())
@@ -47,7 +57,7 @@ const LoginModal = () => {
 
   return (
     <Portal>
-      <div className={styles.modalBackground} ref={modalRef} onClick={clickdiv}>
+      <div className={styles.modalBackground} ref={modalRef} onClick={onClickBackground}>
         <div className={styles.modalWrapper}>
           <h2>SNACKPEDIA</h2>
           <div className={styles.needLogin}>로그인 후 서비스를 이용해주세요.</div>
@@ -56,6 +66,7 @@ const LoginModal = () => {
             <input
               id='email'
               type='text'
+              placeholder='아이디'
               name='user-email'
               value={email}
               onChange={onChangeEmail}
@@ -65,6 +76,7 @@ const LoginModal = () => {
             <input
               id='password'
               type='password'
+              placeholder='비밀번호'
               name='user-password'
               value={password}
               onChange={onChangePassword}
@@ -80,16 +92,16 @@ const LoginModal = () => {
               </button>
             </div>
           </form>
-          <div className={styles.loginTitle}>
+          {/* <div className={styles.loginTitle}>
             카카오 로그인으로 <br />
             간편하게 회원가입 및 로그인이 가능합니다.
-          </div>
+          </div> */}
           <button type='button' onClick={handleCloseModal} className={styles.closeButton}>
             <IoMdClose size={20} />
           </button>
-          <a href='http://localhost:3065/user/kakao/login'>
+          {/* <a href='http://localhost:3065/user/kakao/login'>
             <img src='/images/kakao_login_medium_narrow.png' alt='kakao login' />
-          </a>
+          </a> */}
         </div>
       </div>
     </Portal>
