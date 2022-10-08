@@ -2,12 +2,17 @@
 /* stylelint-disable scale-unlimited/declaration-strict-value */
 /* stylelint-disable selector-class-pattern */
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
 
 .swiper-button-next::after,
 .swiper-button-prev::after {
   display: none;
   font-size: 15px !important;
   color: colors.$BLACK !important;
+
+  @include responsive.after(ML) {
+    display: block;
+  }
 }
 
 .swiper-button-next,
@@ -16,7 +21,30 @@
   display: none;
   width: 28px !important;
   height: 28px !important;
-  // background-color: colors.$WHITE;
   border-radius: 50%;
-  // box-shadow: rgb(0 0 0 / 20%) 0 0 4px 0;
+
+  @include responsive.after(ML) {
+    position: absolute;
+    background-color: colors.$WHITE;
+    box-shadow: rgb(0 0 0 / 20%) 0 0 4px 0;
+  }
+}
+
+.swiper-button-next .swiper-button-disabled,
+.swiper-button-prev .swiper-button-disabled {
+  &::after {
+    color: white;
+  }
+}
+
+.swiper-button-disabled {
+  @include responsive.after(ML) {
+    background-color: colors.$GRAY6;
+  }
+}
+
+.swiper {
+  @include responsive.after(ML) {
+    margin-bottom: 60px;
+  }
 }
