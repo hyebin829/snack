@@ -28,6 +28,7 @@ module.exports = () => {
               email: profile.id,
               nickname: `유저${profile.id}`,
               password: 'kakaologin',
+              profileimagesrc: 'snackpedia-profileimage-default.png',
             })
             const newUserwithToken = {
               id: newUser.id,
