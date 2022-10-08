@@ -12,6 +12,7 @@ import {
   signup,
 } from 'actions/user'
 import { IuserState } from 'types/user'
+import { addReview } from 'actions/post'
 
 export const initialState: IuserState = {
   myInfo: null,
@@ -80,6 +81,7 @@ const userSlice = createSlice({
         state.changeNicknameDone = false
         state.editProfileImageDone = false
         state.myInfo = action.payload
+        state.signupDone = false
       })
       .addCase(loadMyInfo.rejected, (state, action) => {
         state.loadMyInfoLoading = false
@@ -91,9 +93,9 @@ const userSlice = createSlice({
         state.logoutError = null
       })
       .addCase(logout.fulfilled, (state) => {
+        state.myInfo = null
         state.logoutLoading = false
         state.logoutDone = true
-        state.myInfo = null
       })
       .addCase(logout.rejected, (state, action) => {
         state.logoutLoading = false
@@ -191,6 +193,10 @@ const userSlice = createSlice({
       .addCase(editProfileimage.rejected, (state, action) => {
         state.editProfileImageLoading = false
         state.editProfileImageError = action.error.message
+      })
+      .addCase(addReview.fulfilled, (state, action) => {
+        const { myInfo } = state
+        myInfo?.Reviews.unshift(action.payload)
       })
       .addDefaultCase((state) => state),
 })
