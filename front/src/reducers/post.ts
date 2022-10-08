@@ -183,10 +183,10 @@ const postSlice = createSlice({
         state.loadReviewsError = null
       })
       .addCase(loadReviews.fulfilled, (state, action) => {
-        state.loadReviewsLoading = false
-        state.loadReviewsDone = true
         state.reviewList = state.reviewList.concat(action.payload)
         state.hasMoreReview = action.payload.length === 10
+        state.loadReviewsLoading = false
+        state.loadReviewsDone = true
       })
       .addCase(loadReviews.rejected, (state, action) => {
         state.loadReviewsLoading = false
@@ -236,7 +236,6 @@ const postSlice = createSlice({
         review?.Likers.push({ id: action.payload.userId })
         myReview?.Likers.push({ id: action.payload.userId })
         bestReview?.Likers.push({ id: action.payload.userId })
-
         state.addLikeLoading = false
         state.addLikeDone = true
       })
@@ -264,7 +263,7 @@ const postSlice = createSlice({
         state.removeLikeLoading = false
         state.removeLikeError = action.error.message
       })
-      .addCase(logout.fulfilled, (state, action) => {
+      .addCase(logout.fulfilled, (state) => {
         state.myReviewList = []
       })
       .addDefaultCase((state) => state),
