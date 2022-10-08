@@ -1,9 +1,7 @@
 import { addFavorite, removeFavorite } from 'actions/user'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
-
-import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io'
 import { openLoginModal } from 'reducers/modal'
-
+import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io'
 import styles from './favoriteButton.module.scss'
 
 type snackid = {
@@ -17,7 +15,10 @@ const FavoriteButton = ({ snackId }: snackid) => {
   const followed = myInfo?.Favorited.find((favorite) => favorite?.id === Number(snackId))
 
   const onClickFavoriteButton = () => {
-    if (!myInfo?.id) dispatch(openLoginModal())
+    if (!myInfo?.id) {
+      dispatch(openLoginModal())
+      return
+    }
     if (followed) {
       dispatch(removeFavorite({ id: snackId }))
     } else {
@@ -26,11 +27,16 @@ const FavoriteButton = ({ snackId }: snackid) => {
   }
 
   return (
-    <button type='button' onClick={onClickFavoriteButton} className={styles.favoriteButton}>
+    <button
+      type='button'
+      onClick={onClickFavoriteButton}
+      className={styles.favoriteButton}
+      aria-label='favorite toggle'
+    >
       {followed ? (
-        <IoMdHeart size={25} color='#ff8b96' />
+        <IoMdHeart size={25} color='#ff7134' />
       ) : (
-        <IoMdHeartEmpty size={25} color='pink' />
+        <IoMdHeartEmpty size={25} color='#ff7134' />
       )}
     </button>
   )
