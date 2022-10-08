@@ -1,8 +1,14 @@
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
 
 .reviewPage {
+  @include responsive.after(LD) {
+    width: 1200px;
+    margin: 0 auto;
+  }
+
   h2 {
-    margin: 80px 5px 30px;
+    margin: 20px 5px 30px;
     font-size: 20px;
     font-weight: 500;
   }
@@ -20,8 +26,8 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       align-items: center;
-      margin-top: 10px;
-      border-bottom: 2px solid colors.$GRAY6;
+      margin-top: 5px;
+      border-bottom: 1px solid colors.$GRAY6;
 
       .snackImgWrapper {
         align-items: center;
@@ -35,37 +41,54 @@
         }
       }
 
-      .snackNameDate {
+      .nameRating {
         display: flex;
-        flex-direction: column;
         grid-row: 1/2;
         grid-column: 2/5;
+        gap: 10px;
 
-        span {
-          font-size: 14px;
-          color: colors.$GRAY6;
+        .name {
+          font-size: 15px;
         }
       }
 
       .reviewContent {
         grid-row: 2/5;
         grid-column: 1/6;
-        padding: 15px 0;
         margin-bottom: 15px;
-        border-top: 1px solid colors.$GRAY5;
-        border-bottom: 1px solid colors.$GRAY5;
+      }
+
+      .date {
+        grid-row: 5/6;
+        grid-column: 1/4;
+        font-size: 14px;
+        color: colors.$GRAY6;
       }
 
       .likers {
+        display: flex;
         grid-row: 5/6;
+        grid-column: 5/6;
+        justify-self: end;
+        padding-right: 5px;
         margin-bottom: 15px;
+        font-size: 15px;
+
+        span {
+          margin-right: 3px;
+        }
       }
 
       .deleteButton {
         display: flex;
         grid-column: 5/6;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-end;
+        justify-content: flex-end;
+        margin-right: 3px;
+
+        button {
+          color: colors.$GRAY2;
+        }
       }
     }
   }
