@@ -3,16 +3,12 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { changeNickname, loadMyInfo, editProfileimage, uploadImage } from 'actions/user'
-import { IoCamera } from 'react-icons/io5'
 import styles from './editprofile.module.scss'
+import { IoCamera } from 'react-icons/io5'
 
 const EditProfilePage = () => {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-
   const {
     myInfo,
-    loadMyInfoDone,
     profileImagePath,
     changeNicknameError,
     changeNicknameLoading,
@@ -24,13 +20,13 @@ const EditProfilePage = () => {
   const [nicknameValueLengthError, setNicknameValueLengthError] = useState(false)
   const [checkBlank, setCheckBlank] = useState(false)
 
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     dispatch(loadMyInfo)
     if (!myInfo) navigate('/')
   }, [changeNicknameLoading, editProfileImageDone, dispatch, myInfo, navigate])
-
-  if (loadMyInfoDone && !myInfo)
-    return <div className={styles.needLoginMessage}>로그인이 필요합니다.</div>
 
   const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value)
@@ -68,7 +64,11 @@ const EditProfilePage = () => {
   }
 
   return (
-    <div>
+    <div className={styles.profilePage}>
+      <h2>프로필 편집</h2>
+      <span>
+        * 프로필 사진은 20mb이하 <br />* 닉네임은 3글자 이상 10글자 이하만 가능합니다.
+      </span>
       <div className={styles.profileimageFormWrapper}>
         {profileImagePath.length ? (
           <img src={`http://localhost:3065/profileimage/${profileImagePath}`} alt='my profile' />
@@ -83,19 +83,20 @@ const EditProfilePage = () => {
           className={styles.editProfileForm}
           onSubmit={onSubmitProfile}
         >
-          <label htmlFor='file'>
-            <IoCamera size={20} />
-          </label>
-          <input
-            type='file'
-            id='file'
-            accept='image/*'
-            onChange={onChangeProfileImage}
-            formEncType='multipart/form-data'
-            name='profileimage'
-          />
+          <div className={styles.inputWrapper}>
+            <label htmlFor='file'>
+              <IoCamera size={20} />
+            </label>
+            <input
+              type='file'
+              id='file'
+              accept='image/*'
+              onChange={onChangeProfileImage}
+              formEncType='multipart/form-data'
+              name='profileimage'
+            />
+          </div>
 
-          {uploadImageError && <div className={styles.uploadError}>{uploadImageError}</div>}
           <div className={styles.nicknameForm}>
             <input
               type='text'
@@ -113,6 +114,7 @@ const EditProfilePage = () => {
           {nicknameValueLengthError && <div>3글자 이상 10글자 이하로 작성해주세요.</div>}
           {checkBlank && <div>공백문자는 입력 불가능합니다.</div>}
         </div>
+        {uploadImageError && <div className={styles.uploadError}>{uploadImageError}</div>}
       </div>
     </div>
   )

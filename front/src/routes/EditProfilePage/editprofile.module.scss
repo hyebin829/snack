@@ -1,84 +1,107 @@
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
 
-.needLoginMessage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
-}
-
-.profileimageFormWrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 100px;
-
-  img {
-    width: 130px;
-    height: 130px;
-    margin-bottom: 20px;
-    border-radius: 50%;
+.profilePage {
+  @include responsive.after(LD) {
+    width: 1200px;
+    margin: 0 auto;
   }
 
-  .editProfileForm {
-    button {
-      padding: 7px 11px;
-      margin-bottom: 10px;
-      color: colors.$WHITE;
-      background-color: colors.$RED2;
-      border-radius: 5px;
+  h2 {
+    margin: 20px 5px;
+    font-size: 20px;
+    font-weight: 600;
+  }
 
-      &:disabled {
-        padding: 7px 11px;
+  span {
+    font-size: 14px;
+    color: colors.$GRAY3;
+  }
+
+  .needLoginMessage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+  }
+
+  .profileimageFormWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+
+    img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      border-radius: 50%;
+    }
+
+    .editProfileForm {
+      button {
+        padding: 5px 17px;
         color: colors.$WHITE;
-        background-color: colors.$GRAY3;
+        background-color: colors.$YELLOW;
         border-radius: 5px;
+
+        &:disabled {
+          padding: 5px 17px;
+          color: colors.$WHITE;
+          background-color: colors.$GRAY3;
+          border-radius: 5px;
+        }
+      }
+
+      .inputWrapper {
+        position: relative;
+
+        input[type='file'] {
+          display: none;
+        }
+
+        label {
+          position: absolute;
+          top: -50px;
+          right: 25%;
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          padding: 7px;
+          text-align: center;
+          background-color: colors.$WHITE;
+          border-radius: 50%;
+          box-shadow: rgba(0, 0, 0, 24%) 0 3px 8px;
+        }
       }
     }
 
-    input[type='file'] {
-      display: none;
+    .message {
+      div {
+        margin-top: 10px;
+        color: colors.$CARROT;
+      }
     }
 
-    label {
-      position: absolute;
-      top: 90px;
-      right: 120px;
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      padding: 8px;
-      text-align: center;
-      background-color: colors.$WHITE;
-      border-radius: 50%;
-      box-shadow: rgba(0, 0, 0, 24%) 0 3px 8px;
+    .uploadError {
+      margin-top: 15px;
+      font-size: 15px;
+      color: colors.$CARROT;
     }
   }
 
-  .message {
-    div {
-      color: colors.$RED2;
+  .nicknameForm {
+    display: flex;
+    justify-content: center;
+
+    input[type='text'] {
+      width: 180px;
+      height: 30px;
+      padding: 0 7px;
+      margin-right: 5px;
+      border: none;
+      border-bottom: 1px solid colors.$GRAY6;
     }
-  }
-
-  .uploadError {
-    margin-bottom: 10px;
-    font-size: 15px;
-    color: colors.$RED2;
-  }
-}
-
-.nicknameForm {
-  display: flex;
-  justify-content: center;
-
-  input[type='text'] {
-    width: 180px;
-    height: 30px;
-    padding: 0 7px;
-    margin-right: 5px;
-    border: none;
-    border-bottom: 1px solid colors.$GRAY6;
   }
 }
