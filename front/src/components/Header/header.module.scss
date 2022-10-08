@@ -1,10 +1,11 @@
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
 
-header {
+.header {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 100;
   display: flex !important;
   align-items: center;
   justify-content: space-between;
@@ -14,14 +15,54 @@ header {
   border-bottom: 0.5px solid colors.$BACKGROUND;
 
   h1 {
-    padding-left: 15px;
+    padding-left: 20px;
     font-size: 23px;
-    font-weight: 600;
-    color: colors.$RED;
+    font-weight: 700;
+    color: colors.$YELLOW;
   }
 
-  button {
-    padding-right: 25px;
-    color: colors.$FONT;
+  .menu {
+    ul {
+      display: none;
+    }
+    @include responsive.after(MD) {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 300px;
+
+      ul {
+        display: flex;
+        gap: 25px;
+        margin-left: 10px;
+        font-size: 14px;
+
+        a {
+          @include responsive.after(MD) {
+            display: block;
+            font-weight: 500;
+            color: colors.$FONT2;
+
+            &.isActive {
+              font-weight: 500;
+              color: colors.$YELLOW;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .buttonWrapper {
+    .logout {
+      margin-right: 25px;
+    }
+
+    .signUpButton {
+      padding: 5px 14px;
+      margin: 0 15px;
+      border: 1px solid colors.$GRAY6;
+      border-radius: 5px;
+    }
   }
 }
