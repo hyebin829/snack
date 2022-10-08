@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { removeReview } from 'actions/post'
+import { MouseEvent, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import Portal from 'Portal'
-import { MouseEvent, useRef } from 'react'
+import { removeReview } from 'actions/post'
 import { closeConfirmModal } from 'reducers/modal'
 import styles from './confirm.module.scss'
 
@@ -12,7 +12,7 @@ const ConfirmModal = () => {
   const dispatch = useAppDispatch()
   const modalRef = useRef<HTMLDivElement>(null)
 
-  const clickdiv = (e: MouseEvent<HTMLDivElement>) => {
+  const onClickBackground = (e: MouseEvent<HTMLDivElement>) => {
     if (modalRef.current === e.target) {
       dispatch(closeConfirmModal())
     }
@@ -29,7 +29,7 @@ const ConfirmModal = () => {
 
   return (
     <Portal>
-      <div className={styles.modalBackground} ref={modalRef} onClick={clickdiv}>
+      <div className={styles.modalBackground} ref={modalRef} onClick={onClickBackground}>
         <div className={styles.confirmWrapper}>
           <div className={styles.notice}>알림</div>
           <div className={styles.content}>리뷰를 삭제하시겠습니까?</div>
