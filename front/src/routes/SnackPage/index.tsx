@@ -1,21 +1,24 @@
-import { loadSnackInfo } from 'actions/post'
-import FavoriteButton from 'components/FavoriteButton'
-import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'hooks/useRedux'
+import { loadSnackInfo } from 'actions/post'
+import { openLoginModal, openReviewModal } from 'reducers/modal'
 import ReviewListPage from 'routes/ReviewListPage'
+import FavoriteButton from 'components/FavoriteButton'
+import BestReview from 'components/BestReview'
+import SnackSkeleton from 'components/Skeleton/SnackSkeleton'
 import styles from './snack.module.scss'
 import { AiFillStar } from 'react-icons/ai'
-import { openConfirmModal, openLoginModal, openReviewModal } from 'reducers/modal'
-import BestReview from 'components/BestReview'
 import { HiPencilAlt } from 'react-icons/hi'
 
 const SnackPage = () => {
-  const params = useParams()
-  const snackId = params.id
-  const dispatch = useAppDispatch()
-  const { snackInfo } = useAppSelector((state) => state.post)
+  const { snackInfo, loadSnackInfoLoading } = useAppSelector((state) => state.post)
   const { myInfo } = useAppSelector((state) => state.user)
+
+  const params = useParams()
+  const dispatch = useAppDispatch()
+  const snackId = params.id
+  const myReview = snackInfo?.Reviews.filter((review) => review.UserId === myInfo?.id)
 
   useEffect(() => {
     dispatch(loadSnackInfo({ id: snackId }))
@@ -36,34 +39,40 @@ const SnackPage = () => {
       dispatch(openReviewModal())
     }
   }
-  const myReview = snackInfo?.Reviews.filter((review) => review.UserId === myInfo?.id)
 
   return (
     <div className={styles.snackPage}>
-      <ul className={styles.snackInfoWrapper}>
-        <FavoriteButton snackId={snackId} />
-        <img
-          src={`http://localhost:3065/snackimage/${snackInfo?.imagesrc}`}
-          alt={snackInfo?.name}
-        />
-        <li className={styles.snackName}>{snackInfo?.name}</li>
-        <li className={styles.snackBrand}>{snackInfo?.brand}</li>
-        <li className={styles.rating}>
-          평균 <AiFillStar size={15} color='#ffa500' /> {isNaN(ratingAverage) ? 0 : ratingAverage}점
-          <span>({snackInfo?.Reviews.length.toLocaleString()}명)</span>
-        </li>
-      </ul>
+      {loadSnackInfoLoading ? (
+        <SnackSkeleton />
+      ) : (
+        <ul className={styles.snackInfoWrapper}>
+          <li>
+            <FavoriteButton snackId={snackId} />
+          </li>
+          <li>
+            <img
+              src={`http://localhost:3065/snackimage/${snackInfo?.imagesrc}`}
+              alt={snackInfo?.name}
+            />
+          </li>
+          <li className={styles.snackName}>{snackInfo?.name}</li>
+          <li className={styles.snackBrand}>{snackInfo?.brand}</li>
+          <li className={styles.rating}>
+            평균 <AiFillStar size={15} color='#ffa800' /> {isNaN(ratingAverage) ? 0 : ratingAverage}
+            점<span>({snackInfo?.Reviews.length.toLocaleString()})</span>
+          </li>
+          {myReview?.length ? (
+            <div />
+          ) : (
+            <li className={styles.reviewButtonWrapper}>
+              <button type='button' onClick={handleOpenReviewModal}>
+                <HiPencilAlt /> 리뷰 작성하기
+              </button>
+            </li>
+          )}
+        </ul>
+      )}
       <div className={styles.reviewWrapper}>
-        {myReview?.length ? (
-          <div />
-        ) : (
-          <>
-            <div className={styles.writeReview}>{snackInfo?.name}의 리뷰를 남겨주세요! </div>
-            <button type='button' onClick={handleOpenReviewModal}>
-              <HiPencilAlt /> 리뷰 작성하기
-            </button>
-          </>
-        )}
         <div className={styles.reviewTitle}>리뷰</div>
         <BestReview snackId={snackId} />
         <ReviewListPage />
