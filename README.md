@@ -12,7 +12,7 @@
 
 --- 
 
-Frontend : typescript , react, redux-toolkit
+Frontend : typescript , react, redux-toolkit, sass
 
 Backend : javascript , express, sequelize, MySQL
 
