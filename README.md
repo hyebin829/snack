@@ -21,13 +21,10 @@ formatting : eslint, stylelint, prettier
 Production : docker
 
 ---
-
-<details>
-<summary> 과자 데이터 수집</summary>
+### 과자 데이터 수집
 
 과자 회사 홈페이지의 데이터를 크롤링하여 과자 이름과 과자 사진을 수집했습니다.
 
-<div>
 
 ```jsx
 const axios = require('axios')
@@ -126,15 +123,12 @@ scraper()
 ```
 
 수집한 데이터는 서버의 데이터베이스에 저장했습니다.
-</div>
-</details>
 
 
+---
 
-<details>
-<summary>사용자 경험 개선</summary>
+### 사용자 경험 개선
 
-<div>
 
 - Skeleton UI, Loading Spiner를 만들어 데이터가 보이기 전 로딩중임을 사용자에게 알려 사용자 경험을 개선했습니다.
 ![skeleton111](https://user-images.githubusercontent.com/80376561/194859874-50f4423e-cb0c-4597-acdb-543d9d77e80a.gif)
@@ -142,5 +136,50 @@ scraper()
 
 - 크롬의 lighthouse를 사용하여 접근성을 측정해 개선하기 위해 노력했습니다. (button의 aria-label 작성)
 
-</div>
-</details>
+---
+
+### 오류 해결
+
+리뷰를 삭제하거나 좋아요를 취소하는 등의 기능을 만들 때, 기존 리뷰나 좋아요 배열에 filter()를 사용해 동작을 구현했는데 적용이 되지 않는 오류가 있었습니다.
+
+![diff1](https://user-images.githubusercontent.com/80376561/197663785-2fabcd47-b119-4dee-83f9-dc1087b84c7e.png)   
+redux devtool로 확인한 결과 diff 부분에서 배열의 변화가 없는것을 확인할 수 있습니다.
+
+filter 메서드는 배열을 변화시키지 않기 때문에 redux-toolkit에 내장된 immer 라이브러리에서 변경 사항을 추적하지 못해 오류가 발생했다고 생각했습니다.
+따라서 lodash 라이브러리의 remove를 사용하여 배열을 변화시켜주었습니다.
+
+
+```tsx
+//수정 전 코드
+.addCase(removeLike.fulfilled, (state, action) => {
+        const { reviewList, myReviewList, bestReviewList } = state
+        const review = reviewList.find((x) => x.id === action.payload.reviewId)
+        const myReview = myReviewList.find((x) => x.id === action.payload.reviewId)
+        const bestReview = bestReviewList.find((x) => x.id === action.payload.reviewId)
+        if (review) reviewList.filter((x) => x !== action.payload.userId)
+        if (myReview) myReviewList.filter((x) => x !== action.payload.userId)
+        if (bestReview) bestReviewList.filter((x) => x !== action.payload.userId)
+        state.removeLikeLoading = false
+        state.removeLikeDone = true
+      })
+```
+
+```tsx
+//수정 후 코드
+.addCase(removeLike.fulfilled, (state, action) => {
+        const { reviewList, myReviewList, bestReviewList } = state
+        const review = reviewList.find((x) => x.id === action.payload.reviewId)
+        const myReview = myReviewList.find((x) => x.id === action.payload.reviewId)
+        const bestReview = bestReviewList.find((x) => x.id === action.payload.reviewId)
+        if (review) _remove(review?.Likers, { id: action.payload.userId })
+        if (myReview) _remove(myReview?.Likers, { id: action.payload.userId })
+        if (bestReview) _remove(bestReview?.Likers, { id: action.payload.userId })
+        state.removeLikeLoading = false
+        state.removeLikeDone = true
+      })
+```
+
+ 
+![diff2](https://user-images.githubusercontent.com/80376561/197664601-c98f3535-9059-4785-bc9f-dcc28fbf233d.png)   
+
+배열의 변화를 확인할 수 있고 동작하지 않던 오류를 해결했습니다. 
