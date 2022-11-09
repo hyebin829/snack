@@ -7,7 +7,7 @@
 과자를 평가하고 리뷰를 남길 수 있는 서비스입니다. 
 
 ---
-배포 주소 : https://snackpedia.netlify.app/   
+배포 주소 : https://snackpedia.netlify.app/   (서버 중단 상태로 과자 데이터는 보이지 않습니다)
 테스트용 아이디 : test001 ~ test020 , 패스워드 : 123123 로 로그인이 가능합니다. 
 
 --- 
