@@ -137,3 +137,24 @@ scraper()
 - 크롬의 lighthouse를 사용하여 접근성을 측정해 개선하기 위해 노력했습니다. (button의 aria-label 작성)
 
 
+---
+
+### 주요 기능  
+
+- 리뷰 작성/삭제  
+
+![review](https://user-images.githubusercontent.com/80376561/203908107-569f2838-0a5f-4503-81aa-fef167c83435.gif)  
+
+- 과자 검색  
+
+![search](https://user-images.githubusercontent.com/80376561/203908131-5871a5fd-279a-4258-947c-cede9f269548.gif)   
+
+- 좋아하는 과자 추가  
+
+![favorite](https://user-images.githubusercontent.com/80376561/203908181-a84e40ad-9c11-4a5c-8ea9-16882ff3d1e9.gif)  
+
+
+
+
+
+
