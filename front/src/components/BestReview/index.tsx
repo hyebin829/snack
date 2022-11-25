@@ -7,7 +7,7 @@ import Spiner from 'components/Spiner'
 import styles from './bestReview.module.scss'
 import { AiFillStar } from 'react-icons/ai'
 
-type snackid = {
+interface snackid {
   snackId: string | undefined
 }
 

@@ -130,22 +130,22 @@ export interface Ireview {
   Likers: { id: number }[]
 }
 
-type like = {
+interface like {
   ReviewId: number
   UserId: number
   createdAt: date
   updatedAt: date
 }
 
-export type word = {
+export interface word {
   word: string
 }
 
-export type snackid = {
+export interface snackid {
   id: string | undefined
 }
 
-export type review = {
+export interface review {
   snackId: string | undefined
   userId: number
   content: string
@@ -154,20 +154,20 @@ export type review = {
   profileimagesrc: string | null
 }
 
-export type reviewId = {
+export interface reviewId {
   lastId: number | undefined
   snackId: string | undefined
 }
 
-export type likeReviewId = {
+export interface likeReviewId {
   reviewId: number | undefined
 }
 
-export type userReview = {
+export interface userReview {
   reviewId: number | undefined
   userId: number | undefined
 }
 
-export type myId = {
+export interface myId {
   userId: number | undefined
 }

@@ -73,20 +73,20 @@ export interface Ifavorite {
 
 interface IuserInfo {}
 
-export type userNickname = {
+export interface userNickname {
   nickname: string | undefined
 }
 
-export type profileImagesrc = {
+export interface profileImagesrc {
   imagesrc: string[] | null
 }
 
-export type loginInfo = {
+export interface loginInfo {
   email: string
   password: string
 }
 
-export type signupInfo = {
+export interface signupInfo {
   email: string
   password: string
   nickname: string

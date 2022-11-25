@@ -4,7 +4,7 @@ import { openLoginModal } from 'reducers/modal'
 import { IbestReview, Ireview } from 'types/post'
 import { RiThumbUpLine, RiThumbUpFill } from 'react-icons/ri'
 
-type review = {
+interface review {
   review: Ireview | IbestReview
 }
 

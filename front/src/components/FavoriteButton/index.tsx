@@ -4,7 +4,7 @@ import { openLoginModal } from 'reducers/modal'
 import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io'
 import styles from './favoriteButton.module.scss'
 
-type snackid = {
+interface snackid {
   snackId: string | undefined
 }
 
