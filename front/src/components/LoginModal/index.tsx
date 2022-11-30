@@ -11,10 +11,10 @@ import { IoMdClose } from 'react-icons/io'
 const LoginModal = () => {
   const { loginError, myInfo } = useAppSelector((state) => state.user)
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -41,18 +41,12 @@ const LoginModal = () => {
     dispatch(closeLoginModal())
   }
 
-  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }
-
-  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-  }
-
   const onSubmitForm = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrorMessage(true)
-    dispatch(login({ email, password }))
+    if (emailRef.current?.value && passwordRef.current?.value) {
+      dispatch(login({ email: emailRef.current.value, password: passwordRef.current.value }))
+    }
   }
 
   return (
@@ -68,8 +62,7 @@ const LoginModal = () => {
               type='text'
               placeholder='아이디'
               name='user-email'
-              value={email}
-              onChange={onChangeEmail}
+              ref={emailRef}
               required
             />
             <label htmlFor='password'>비밀번호</label>
@@ -78,8 +71,7 @@ const LoginModal = () => {
               type='password'
               placeholder='비밀번호'
               name='user-password'
-              value={password}
-              onChange={onChangePassword}
+              ref={passwordRef}
               required
             />
             {errorMessage && loginError && <div className={styles.errorMessage}>{loginError}</div>}
