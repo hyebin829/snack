@@ -43,6 +43,10 @@
             font-weight: 500;
             color: colors.$FONT2;
 
+            &:hover {
+              color: colors.$YELLOW;
+            }
+
             &.isActive {
               font-weight: 500;
               color: colors.$YELLOW;
