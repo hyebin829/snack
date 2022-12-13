@@ -7,7 +7,7 @@ const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 
-const { User, Review, Image, Comment, Snack } = require('../models')
+const { User, Review, Snack } = require('../models')
 
 try {
   fs.accessSync('profileimage')
@@ -157,17 +157,6 @@ router.post('/login', (req, res, next) => {
   })(req, res, next)
 })
 
-router.get('/kakao/login', passport.authenticate('kakao'))
-
-router.get(
-  '/kakao/login/callback',
-  passport.authenticate('kakao', {
-    failureMessage: true,
-    successRedirect: 'http://localhost:3000/',
-    failureRedirect: 'http://localhost:3000/',
-  })
-)
-
 router.post('/logout', async (req, res) => {
   if (req.user.accessToken && req.user.refreshToken) {
     try {
@@ -185,12 +174,6 @@ router.post('/logout', async (req, res) => {
   req.logout()
   req.session.destroy()
   res.send('logoutDone')
-})
-
-router.get('/kakao/logout', async (req, res) => {
-  req.logout()
-  req.session.destroy()
-  res.redirect('http://localhost:3000')
 })
 
 router.patch('/:snackId/favorite', async (req, res, next) => {
