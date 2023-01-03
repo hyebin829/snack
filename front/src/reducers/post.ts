@@ -13,6 +13,7 @@ import {
   addLike,
   removeLike,
   loadBestReview,
+  loadReviewNumber,
 } from 'actions/post'
 import { IpostState } from 'types/post'
 import { logout } from 'actions/user'
@@ -24,6 +25,7 @@ export const initialState: IpostState = {
   bestReviewList: [],
   searchWordList: [],
   snackInfo: null,
+  reviewNumber: null,
   rating: null,
   reviewList: [],
   myReviewList: [],
@@ -53,6 +55,9 @@ export const initialState: IpostState = {
   loadReviewsLoading: false,
   loadReviewsDone: false,
   loadReviewsError: null,
+  loadReviewNumberLoading: false,
+  loadReviewNumberDone: false,
+  loadReviewNumberError: null,
   removeReviewLoading: false,
   removeReviewDone: false,
   removeReviewError: null,
@@ -191,6 +196,20 @@ const postSlice = createSlice({
       .addCase(loadReviews.rejected, (state, action) => {
         state.loadReviewsLoading = false
         state.loadReviewsError = action.error.message
+      })
+      .addCase(loadReviewNumber.pending, (state) => {
+        state.loadReviewNumberLoading = true
+        state.loadReviewNumberDone = false
+        state.loadReviewNumberError = null
+      })
+      .addCase(loadReviewNumber.fulfilled, (state, action) => {
+        state.reviewNumber = action.payload
+        state.loadReviewNumberLoading = false
+        state.loadReviewNumberDone = true
+      })
+      .addCase(loadReviewNumber.rejected, (state, action) => {
+        state.loadReviewNumberLoading = false
+        state.loadReviewNumberError = action.error.message
       })
       .addCase(removeReview.pending, (state) => {
         state.removeReviewLoading = true
