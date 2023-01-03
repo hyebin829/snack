@@ -45,6 +45,11 @@ export const loadReviews = createAsyncThunk('post/loadReviews', async (data: rev
   return response.data
 })
 
+export const loadReviewNumber = createAsyncThunk('post/loadReviewNumber', async () => {
+  const response = await axios.get('/post/reviewnumber')
+  return response.data
+})
+
 export const removeReview = createAsyncThunk('post/removeReview', async (data: userReview) => {
   const response = await axios.delete(`/post/${data.reviewId}`)
   return response.data
