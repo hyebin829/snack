@@ -5,6 +5,7 @@ export interface IpostState {
   bestReviewList: IbestReview[]
   searchWordList: IsearchWord[]
   snackInfo: IsnackInfo | null
+  reviewNumber: null | number
   rating: null | number
   reviewList: Ireview[]
   myReviewList: Ireview[]
@@ -34,6 +35,9 @@ export interface IpostState {
   loadReviewsLoading: boolean
   loadReviewsDone: boolean
   loadReviewsError: null | string | undefined
+  loadReviewNumberLoading: boolean
+  loadReviewNumberDone: boolean
+  loadReviewNumberError: null | string | undefined
   removeReviewLoading: boolean
   removeReviewDone: boolean
   removeReviewError: null | string | undefined
