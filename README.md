@@ -137,6 +137,9 @@ scraper()
 - 크롬의 lighthouse를 사용하여 접근성을 측정해 개선하기 위해 노력했습니다. (button의 aria-label 작성)
 
 
+- 로그인 폼 렌더링 최적화
+https://hb829.tistory.com/31
+
 ---
 
 ### 주요 기능  
