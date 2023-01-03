@@ -220,6 +220,15 @@ router.get('/:snackId/review', async (req, res, next) => {
   }
 })
 
+router.get('/reviewNumber', async (req, res, next) => {
+  try {
+    const number = await Review.count()
+    res.status(201).json(number)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 router.get('/:userId/myreview', async (req, res, next) => {
   const where = { UserId: parseInt(req.params.userId, 10) }
   console.log(req.query.lastId)
