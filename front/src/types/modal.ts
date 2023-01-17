@@ -1,4 +1,4 @@
-export interface ImodalState {
+declare interface ImodalState {
   isLoginModalOpen: boolean
   isConfirmModalOpen: boolean
   isReviewModalOpen: boolean

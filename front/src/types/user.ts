@@ -22,7 +22,7 @@ export interface IuserState {
   changeNicknameLoading: boolean
   changeNicknameDone: boolean
   changeNicknameError: null | string | undefined
-  profileImagePath: Array | null
+  profileImagePath: Array<string> | null
   uploadImageLoading: boolean
   uploadImageDone: boolean
   uploadImageError: null | string | undefined
@@ -46,15 +46,6 @@ interface IuserReview {
   UserId: number
   content: string
   rating: number
-}
-
-interface ImyFavorite {
-  Favorite: ImyFavorite
-  brand: string
-  country: string
-  id: number
-  imagesrc: string
-  name: string
 }
 
 export interface Ifavorite {

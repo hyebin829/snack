@@ -5,7 +5,7 @@ export interface IpostState {
   bestReviewList: IbestReview[]
   searchWordList: IsearchWord[]
   snackInfo: IsnackInfo | null
-  reviewNumber: null | number
+  reviewNumber: number
   rating: null | number
   reviewList: Ireview[]
   myReviewList: Ireview[]
@@ -79,11 +79,11 @@ interface ItopReviewSnack {
   count: number
 }
 
-interface IbestReview {
+export interface IbestReview {
   id: number
   content: string
-  createdAt: date
-  updatedAt: date
+  createdAt: Date
+  updatedAt: Date
   UserId: number
   SnackId: number
   rating: number
@@ -116,7 +116,6 @@ interface Ifavorited {
     SnackId: number
     UserId: number
     createdAt: string | null
-    createdAt: string | null
   }
   id: number
 }
@@ -129,16 +128,9 @@ export interface Ireview {
   rating: number
   UserId: number
   User?: { id: number; nickname: string; profileimagesrc: string | null }
-  createdAt: date
-  updatedAt: date
+  createdAt: Date
+  updatedAt: Date
   Likers: { id: number }[]
-}
-
-interface like {
-  ReviewId: number
-  UserId: number
-  createdAt: date
-  updatedAt: date
 }
 
 export interface word {
