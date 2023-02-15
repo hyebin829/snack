@@ -4,11 +4,9 @@
 
 # SNACKPEDIA   
 
-과자를 평가하고 리뷰를 남길 수 있는 서비스입니다. 
+과자를 평가하고 리뷰를 남길 수 있는 서비스입니다.   
+~~배포 주소 : https://snackpedia.netlify.app/~~   (서버 중단 상태)  
 
----
-배포 주소 : https://snackpedia.netlify.app/   (서버 중단 상태로 과자 데이터는 보이지 않습니다)  
-테스트용 아이디 : test001 ~ test020 , 패스워드 : 123123 로 로그인이 가능합니다. 
 
 --- 
 
@@ -19,6 +17,38 @@ Backend : javascript , express, sequelize, MySQL
 formatting : eslint, stylelint, prettier
 
 Production : docker
+
+---
+
+### 주요 기능  
+
+- 리뷰 작성/삭제  
+
+![review](https://user-images.githubusercontent.com/80376561/203908107-569f2838-0a5f-4503-81aa-fef167c83435.gif)  
+
+- 과자 검색  
+
+![search](https://user-images.githubusercontent.com/80376561/203908131-5871a5fd-279a-4258-947c-cede9f269548.gif)   
+
+- 좋아하는 과자 추가  
+
+![favorite](https://user-images.githubusercontent.com/80376561/203908181-a84e40ad-9c11-4a5c-8ea9-16882ff3d1e9.gif)  
+
+
+---
+
+### 사용자 경험 개선
+
+
+- Skeleton UI, Loading Spiner를 만들어 데이터가 보이기 전 로딩중임을 사용자에게 알려 사용자 경험을 개선했습니다.
+![skeleton111](https://user-images.githubusercontent.com/80376561/194859874-50f4423e-cb0c-4597-acdb-543d9d77e80a.gif)
+![skeleton2222](https://user-images.githubusercontent.com/80376561/194859885-373b33b5-1b11-4604-b6d3-666c9b8d59e6.gif)
+
+- 크롬의 lighthouse를 사용하여 접근성을 측정해 개선하기 위해 노력했습니다. (button의 aria-label 작성)
+
+
+- 로그인 폼 렌더링 최적화
+https://hb829.tistory.com/31
 
 ---
 ### 과자 데이터 수집
@@ -74,6 +104,7 @@ const scraper = async () => {
 scraper()
 ```
 
+
 cheerio를 사용하여 크롤링하던 중 버튼을 클릭해 페이지를 넘겨주어야 하는 부분이 있어 동적 크롤링을 위해 puppeteer를 사용했습니다. 
 
 ```jsx
@@ -123,40 +154,6 @@ scraper()
 ```
 
 수집한 데이터는 서버의 데이터베이스에 저장했습니다.
-
-
----
-
-### 사용자 경험 개선
-
-
-- Skeleton UI, Loading Spiner를 만들어 데이터가 보이기 전 로딩중임을 사용자에게 알려 사용자 경험을 개선했습니다.
-![skeleton111](https://user-images.githubusercontent.com/80376561/194859874-50f4423e-cb0c-4597-acdb-543d9d77e80a.gif)
-![skeleton2222](https://user-images.githubusercontent.com/80376561/194859885-373b33b5-1b11-4604-b6d3-666c9b8d59e6.gif)
-
-- 크롬의 lighthouse를 사용하여 접근성을 측정해 개선하기 위해 노력했습니다. (button의 aria-label 작성)
-
-
-- 로그인 폼 렌더링 최적화
-https://hb829.tistory.com/31
-
----
-
-### 주요 기능  
-
-- 리뷰 작성/삭제  
-
-![review](https://user-images.githubusercontent.com/80376561/203908107-569f2838-0a5f-4503-81aa-fef167c83435.gif)  
-
-- 과자 검색  
-
-![search](https://user-images.githubusercontent.com/80376561/203908131-5871a5fd-279a-4258-947c-cede9f269548.gif)   
-
-- 좋아하는 과자 추가  
-
-![favorite](https://user-images.githubusercontent.com/80376561/203908181-a84e40ad-9c11-4a5c-8ea9-16882ff3d1e9.gif)  
-
-
 
 
 
